@@ -14,6 +14,7 @@ typedef struct cell {
 
 typedef struct {
 
+    int Length;
     cell_t *First;
     cell_t *Last;
 
