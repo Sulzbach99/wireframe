@@ -1,5 +1,6 @@
 #include "common.h"
 #include "list.h"
+#include "reading.h"
 #include <string.h>
 
 void parseArgs(int argc, char *argv[], char *path)
