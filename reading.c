@@ -65,7 +65,7 @@ void getThreeD(list_t *Verts)
         i++;
 
         j = 0;
-        while (ptr[i] != ' ')
+        while (ptr[i] != ' ' && ptr[i] !=  '\n')
         {
             Z[j] = ptr[i];
             i++;
