@@ -6,7 +6,7 @@ void createList(list_t *List)
 {
     List = Malloc(sizeof(list_t));
     FIRSTCELL(List) = NULL;
-    LASTCELL(List) = FIRSTCELL(List); // João 20:16
+    LASTCELL(List) = NULL;
     LISTLENGTH(List) = 0;
 }
 
