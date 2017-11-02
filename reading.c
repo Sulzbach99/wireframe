@@ -33,7 +33,7 @@ void readFile(char *path, list_t *Verts, list_t *Faces)
     fclose(OBJS);
 }
 
-void getThreeD(list_t *Verts)
+void getVerts(list_t *Verts)
 {
     cell_t *Cell = FIRSTCELL(Verts);
     threeD_t *Coord;
