@@ -2,12 +2,13 @@
 
 /* Cria uma lista genérica com ponteiros First e Last iguais a NULL */
 
-void createList(list_t *List)
+cell_t *createList(list_t *List)
 {
     List = Malloc(sizeof(list_t));
     FIRSTCELL(List) = NULL;
     LASTCELL(List) = NULL;
     LISTLENGTH(List) = 0;
+    return List;
 }
 
 /********************************************************************/

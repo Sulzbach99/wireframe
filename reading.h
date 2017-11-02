@@ -7,6 +7,6 @@
 
 #define MAXLINESIZE 50
 
-void readFile(char *path, list_t Verts, list_t Faces);
+void readFile(char *path, list_t *Verts, list_t *Faces);
 
 #endif
