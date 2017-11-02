@@ -24,8 +24,8 @@ int main(int argc, char *argv[])
     char path[MAXPATHSIZE];
     parseArgs(argc, argv, path);
 
-    list_t *Verts = NULL, *Faces = NULL;
-    readFile(path, Verts, Faces);
+    list_t Verts, Faces;
+    readFile(path, &Verts, &Faces);
 
     exit(EXIT_SUCCESS);
 }
