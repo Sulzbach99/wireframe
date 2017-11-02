@@ -3,7 +3,7 @@
 
 #include "common.h"
 #include "lists.h"
-#include <strings.h>
+#include <string.h>
 
 #define MAXLINESIZE 50
 
