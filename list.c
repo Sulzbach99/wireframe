@@ -17,13 +17,19 @@ void createList(list_t *List)
 
 void createCell(list_t *List)
 {
-    NEXTCELL(LASTCELL(List)) = Malloc(sizeof(cell_t));
-    LASTCELL(List) = NEXTCELL(LASTCELL(List));
+    if (!LASTCELL(List))
+    {
+        LASTCELL(List) = Malloc(sizeof(cell_t));
+        FIRSTCELL(List) = LASTCELL(List);
+    }
+    else
+    {
+        NEXTCELL(LASTCELL(List)) = Malloc(sizeof(cell_t));
+        LASTCELL(List) = NEXTCELL(LASTCELL(List));
+    }
+
     NEXTCELL(LASTCELL(List)) = NULL;
     LISTLENGTH(List)++;
-
-    if (!FIRSTCELL(List))
-        FIRSTCELL(List) = LASTCELL(List);
 }
 
 /*********************************************************************/
