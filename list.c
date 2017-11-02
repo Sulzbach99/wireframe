@@ -46,3 +46,12 @@ void removeCell(list_t *List)
 }
 
 /******************************************/
+
+/* Faz o campo Item da célula dada apontar para o endereço dado */
+
+void appendItem(cell_t *Cell, void *Addr)
+{
+    CURRENTITEM(Cell) = Addr;
+}
+
+/****************************************************************/

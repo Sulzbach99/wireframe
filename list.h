@@ -25,10 +25,14 @@ typedef struct {
 /* Constantes para facilitar a sintaxe */
 
 #define LISTLENGTH(list) list->Length
+
 #define FIRSTCELL(list) list->First
 #define LASTCELL(list) list->Last
 #define NEXTCELL(cell) cell->Next
+
+#define FIRSTITEM(list) list->Last->Item
 #define LASTITEM(list) list->Last->Item
+#define CURRENTITEM(cell) cell->Item
 
 /***************************************/
 
