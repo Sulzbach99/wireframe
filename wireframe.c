@@ -21,7 +21,7 @@ void parseArgs(int argc, char *argv[], char *path)
 
 int main(int argc, char *argv[])
 {
-    char path[MAXPATHSIZE] = NULL;
+    char path[MAXPATHSIZE];
     parseArgs(argc, argv, path);
 
     list_t *Verts = NULL, *Faces = NULL;
