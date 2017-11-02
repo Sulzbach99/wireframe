@@ -28,6 +28,7 @@ typedef struct {
 #define FIRSTCELL(list) list->First
 #define LASTCELL(list) list->Last
 #define NEXTCELL(cell) cell->Next
+#define LASTITEM(list) list->Last->Item
 
 /***************************************/
 
