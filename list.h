@@ -36,7 +36,7 @@ typedef struct {
 
 /***************************************/
 
-list_t *createList();
+void initList(list_t *List);
 void createCell(list_t *List);
 void removeCell(list_t *List);
 void appendItem(cell_t *Cell, void *Addr);
