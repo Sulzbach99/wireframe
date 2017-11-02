@@ -10,7 +10,7 @@ void parseArgs(int argc, char *argv[], char *path)
         exit(EXIT_FAILURE);
     }
 
-    if (argv[1] != '<')
+    if (argv[1][0] != '<')
         strcpy(path, argv[1]);
     else
         path = "stdin";
