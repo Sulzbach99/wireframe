@@ -3,6 +3,8 @@
 #include "reading.h"
 #include <string.h>
 
+#define MAXPATHSIZE 50
+
 void parseArgs(int argc, char *argv[], char *path)
 {
     if (argc > 3)
@@ -19,7 +21,7 @@ void parseArgs(int argc, char *argv[], char *path)
 
 int main(int argc, char *argv[])
 {
-    char *path = NULL;
+    char path[MAXPATHSIZE] = NULL;
     parseArgs(argc, argv, path);
 
     list_t *Verts = NULL, *Faces = NULL;
