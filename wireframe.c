@@ -27,5 +27,7 @@ int main(int argc, char *argv[])
     list_t Verts, Faces;
     readFile(path, &Verts, &Faces);
 
+    getThreeD(&Verts);
+
     exit(EXIT_SUCCESS);
 }
