@@ -7,7 +7,7 @@ void readFile(char *path, list_t *Verts, list_t *Faces)
     if (!OBJS)
     {
         fprintf(stderr, "Error: Could not load file\n");
-        exit(EXIT_FAILURE):
+        exit(EXIT_FAILURE);
     }
 
     createList(Verts);
