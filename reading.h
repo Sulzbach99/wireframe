@@ -2,7 +2,7 @@
 #define __READING__
 
 #include "common.h"
-#include "lists.h"
+#include "list.h"
 #include <string.h>
 
 #define MAXLINESIZE 50

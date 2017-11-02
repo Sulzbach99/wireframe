@@ -1,4 +1,4 @@
-#include "lists.h"
+#include "list.h"
 
 /* Cria uma lista genérica com ponteiros First e Last iguais a NULL */
 

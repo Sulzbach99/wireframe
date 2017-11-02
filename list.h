@@ -1,5 +1,5 @@
-#ifndef __LISTS__
-#define __LISTS__
+#ifndef __LIST__
+#define __LIST__
 
 #include "common.h"
 
