@@ -19,10 +19,10 @@ void parseArgs(int argc, char *argv[], char *path)
 
 int main(int argc, char *argv[])
 {
-    char *path;
+    char *path = NULL;
     parseArgs(argc, argv, path);
 
-    list_t *Verts, *Faces;
+    list_t *Verts = NULL, *Faces = NULL;
     readFile(path, Verts, Faces);
 
     exit(EXIT_SUCCESS);
