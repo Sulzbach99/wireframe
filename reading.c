@@ -13,8 +13,7 @@ void readFile(char *path, list_t *Verts, list_t *Faces)
     initList(Verts);
     initList(Faces);
 
-    char line[MAXLINESIZE];
-    char *ptr;
+    char line[MAXLINESIZE], *ptr;
     while (fgets(line, MAXLINESIZE, OBJS))
         if (line[0] == 'v' && line[1] == ' ')
         {
