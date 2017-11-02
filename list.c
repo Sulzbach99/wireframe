@@ -55,3 +55,8 @@ void appendItem(cell_t *Cell, void *Addr)
 }
 
 /****************************************************************/
+
+cell_t *getLastCell(list_t *List)
+{
+    return LASTCELL(List);
+}
