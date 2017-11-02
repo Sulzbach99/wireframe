@@ -10,8 +10,8 @@ void readFile(char *path, list_t *Verts, list_t *Faces)
         exit(EXIT_FAILURE);
     }
 
-    Verts = createList(Verts);
-    Faces = createList(Faces);
+    initList(Verts);
+    initList(Faces);
 
     char line[MAXLINESIZE];
     char *ptr;
