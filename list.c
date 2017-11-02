@@ -2,8 +2,9 @@
 
 /* Cria uma lista genérica com ponteiros First e Last iguais a NULL */
 
-cell_t *createList(list_t *List)
+cell_t *createList()
 {
+    list_t *List;
     List = Malloc(sizeof(list_t));
     FIRSTCELL(List) = NULL;
     LASTCELL(List) = NULL;
