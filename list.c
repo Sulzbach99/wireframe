@@ -58,10 +58,3 @@ void appendItem(cell_t *Cell, void *Addr)
 {
     CURRENTITEM(Cell) = Addr;
 }
-
-/****************************************************************/
-
-cell_t *getLastCell(list_t *List)
-{
-    return LASTCELL(List);
-}

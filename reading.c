@@ -20,15 +20,69 @@ void readFile(char *path, list_t *Verts, list_t *Faces)
             createCell(Verts);
             ptr = Malloc(strlen(line) + 1);
             strcpy(ptr, line);
-            appendItem(getLastCell(Verts), ptr);
+            appendItem(LASTCELL(Verts), ptr);
         }
         else if (line[0] == 'f')
         {
             createCell(Faces);
             ptr = Malloc(strlen(line) + 1);
             strcpy(ptr, line);
-            appendItem(getLastCell(Faces), ptr);
+            appendItem(LASTCELL(Faces), ptr);
         }
 
     fclose(OBJS);
+}
+
+void getThreeD(list_t *Verts)
+{
+    cell_t *Cell = FIRSTCELL(Verts);
+    threeD_t *Coord;
+    char *ptr, X[MAXLINESIZE], Y[MAXLINESIZE], Z[MAXLINESIZE];
+    unsigned short i = 2, j;
+
+    while (Cell)
+    {
+        ptr = (char *) CURRENTITEM(Cell);
+
+        j = 0;
+        while (ptr[i] != ' ')
+        {
+            X[j] = ptr[i];
+            i++;
+            j++;
+        }
+        X[j] = '\0';
+        i++;
+
+        j = 0;
+        while (ptr[i] != ' ')
+        {
+            Y[j] = ptr[i];
+            i++;
+            j++;
+        }
+        Y[j] = '\0';
+        i++;
+
+        j = 0;
+        while (ptr[i] != ' ')
+        {
+            Z[j] = ptr[i];
+            i++;
+            j++;
+        }
+        Z[j] = '\0';
+
+        free(ptr);
+
+        Coord = Malloc(sizeof(threeD_t));
+
+        GETX(Coord) = atof(X);
+        GETY(Coord) = atof(Y);
+        GETZ(Coord) = atof(Z);
+
+        appendItem(Cell, Coord);
+
+        Cell = NEXTCELL(Cell);
+    }
 }

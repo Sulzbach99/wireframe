@@ -1,6 +1,9 @@
 #ifndef __COMMON__
 #define __COMMON__
 
+#include <stdio.h>
+#include <stdlib.h>
+
 /* Coordenada bidimensional */
 
 typedef struct {
@@ -24,8 +27,13 @@ typedef struct {
 
 /*****************************/
 
-#include <stdio.h>
-#include <stdlib.h>
+/* Constantes para facilitar a sintaxe */
+
+#define GETX(coord) coord->x
+#define GETY(coord) coord->y
+#define GETZ(coord) coord->z
+
+/***************************************/
 
 void *Malloc(int size);
 
