@@ -24,5 +24,5 @@ int main(int argc, char *argv[])
     list_t *Verts, *Faces;
     readFile(path, Verts, Faces);
 
-    exit(EXIT_SUCCESS)
+    exit(EXIT_SUCCESS);
 }
