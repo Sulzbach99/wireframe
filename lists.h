@@ -24,6 +24,7 @@ typedef struct {
 
 /* Constantes para facilitar a sintaxe */
 
+#define LISTLENGTH(list) list->Length
 #define FIRSTCELL(list) list->First
 #define LASTCELL(list) list->Last
 #define NEXTCELL(cell) cell->Next
