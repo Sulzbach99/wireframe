@@ -1,4 +1,6 @@
-#include "common.h"
+#include <stdio.h>
+#include <string.h>
+#include "obj.h"
 
 #define MAXPATHSIZE 50
 #define MAXLINESIZE 50

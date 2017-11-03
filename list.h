@@ -1,7 +1,7 @@
 #ifndef __LIST__
 #define __LIST__
 
-#include "common.h"
+#include "Malloc.h"
 
 /* Definição de uma lista genérica */
 
