@@ -32,12 +32,13 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
     threeD_t *RawVerts = Malloc(sizeof(threeD_t) * (*VertNum));
 
     char *ptr, X[MAXFLOATSIZE], Y[MAXFLOATSIZE], Z[MAXFLOATSIZE];
-    unsigned short i = 2, j, k = 0;
+    unsigned short i, j, k = 0;
     cell_t *Cell = VertInfo->First;
     while (Cell)
     {
         ptr = (char *) Cell->Item;
 
+        i = 2;
         j = 0;
         while (ptr[i] != ' ')
         {
@@ -59,7 +60,7 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
         i++;
 
         j = 0;
-        while (ptr[i] != ' ' && ptr[i] !=  '\n')
+        while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.')
         {
             Z[j] = ptr[i];
             i++;
@@ -161,7 +162,7 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
 
         i = 2;
         j = 0;
-        while (ptr[i] != ' ' && ptr[i] != '/' && ptr[i] != '\n')
+        while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.')
         {
             First[j] = ptr[i];
             i++;
@@ -177,7 +178,7 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
                 i++;
 
             j = 0;
-            while (ptr[i] != ' ' && ptr[i] != '/' && ptr[i] != '\n' && ptr[i] != '\0')
+            while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.')
             {
                 Next[j] = ptr[i];
                 i++;
