@@ -26,20 +26,12 @@ typedef struct {
 
 /*****************************/
 
-/* Constantes para facilitar a sintaxe */
-
-#define GETX(coord) coord->x
-#define GETY(coord) coord->y
-#define GETZ(coord) coord->z
-
-/***************************************/
-
 /* Aresta */
 
 typedef struct {
 
-    twoD_t *Start;
-    twoD_t *End;
+    unsigned int Start;
+    unsigned int End;
 
 } edge_t;
 
@@ -53,6 +45,7 @@ typedef struct {
     threeD_t *RawVerts;
     twoD_t *ProjVerts;
     list_t FaceInfo;
+    list_t EdgeInfo;
     edge_t *Edges;
 
 } obj_t;
