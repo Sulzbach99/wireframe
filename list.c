@@ -47,7 +47,6 @@ void removeCell(list_t *List)
     ptr = FIRSTCELL(List);
     FIRSTCELL(List) = NEXTCELL(FIRSTCELL(List));
     free(ptr);
-    LISTLENGTH(List)--;
 }
 
 /******************************************/
