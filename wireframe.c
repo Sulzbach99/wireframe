@@ -28,9 +28,6 @@ void readFile(char *path, list_t *Verts, list_t *Faces)
         exit(EXIT_FAILURE);
     }
 
-    initList(Verts);
-    initList(Faces);
-
     char line[MAXLINESIZE], *ptr;
     while (fgets(line, MAXLINESIZE, OBJS))
         if (line[0] == 'v' && line[1] == ' ')
@@ -57,6 +54,8 @@ int main(int argc, char *argv[])
     parseArgs(argc, argv, path);
 
     obj_t Object;
+    initList(&Object.VertInfo);
+    initList(&Object.FaceInfo);
     readFile(path, &Object.VertInfo, &Object.FaceInfo);
 
     getRawVerts(&Object);
