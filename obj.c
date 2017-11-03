@@ -4,13 +4,20 @@
 
 void initObj(obj_t *Obj)
 {
-    initList(&Obj->VertInfo);
-    initList(&Obj->FaceInfo);
-    initList(&Obj->EdgeInfo);
+    Obj->VertInfo = Malloc(sizeof(list_t));
+    Obj->FaceInfo = Malloc(sizeof(list_t));
+    Obj->EdgeInfo = Malloc(sizeof(list_t));
+
+    initList(Obj->VertInfo);
+    initList(Obj->FaceInfo);
+    initList(Obj->EdgeInfo);
 
     Obj->RawVerts = NULL;
     Obj->ProjVerts = NULL;
     Obj->Edges = NULL;
+
+    Obj->VertNum = 0;
+    Obj->EdgeNum = 0;
 }
 
 /***********************/
@@ -19,14 +26,14 @@ void initObj(obj_t *Obj)
 ** preencher um vetor de vértices tridimensionais. VertInfo é esvaziada /
 ** no processo                                                         */
 
-void getRawVerts(obj_t *Obj)
+threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
 {
-    cell_t *Cell = Obj->VertInfo.First;
+    *VertNum = VertInfo->Length;
+    threeD_t *RawVerts = Malloc(sizeof(threeD_t) * (*VertNum));
+
     char *ptr, X[MAXFLOATSIZE], Y[MAXFLOATSIZE], Z[MAXFLOATSIZE];
     unsigned short i = 2, j, k = 0;
-
-    Obj->RawVerts = Malloc(sizeof(threeD_t) * Obj->VertInfo.Length);
-
+    cell_t *Cell = VertInfo->First;
     while (Cell)
     {
         ptr = (char *) Cell->Item;
@@ -62,20 +69,18 @@ void getRawVerts(obj_t *Obj)
 
         free(ptr);
 
-        Obj->RawVerts[k].x = atof(X);
-        Obj->RawVerts[k].y = atof(Y);
-        Obj->RawVerts[k].z = atof(Z);
+        RawVerts[k].x = atof(X);
+        RawVerts[k].y = atof(Y);
+        RawVerts[k].z = atof(Z);
 
         k++;
 
-        removeCell(&Obj->VertInfo);
-        Cell = Obj->VertInfo.First;
+        removeCell(VertInfo);
+        Cell = VertInfo->First;
     }
+    VertInfo->Last = NULL;
 
-    Obj->VertInfo.Last = NULL;
-
-    // Isso deveria ir em outro lugar...
-    Obj->ProjVerts = Malloc(sizeof(twoD_t) * Obj->VertInfo.Length);
+    return RawVerts;
 }
 
 /***********************************************************************/
@@ -83,12 +88,12 @@ void getRawVerts(obj_t *Obj)
 /* Aplica o cálculo de perspectiva, gerando um vetor de vértices bidimensionais /
 ** a partir do vetor de vértices tridimensionais                               */
 
-void getProjVerts(obj_t Obj, threeD_t Cam)
+void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, threeD_t Cam)
 {
-    for (unsigned int i = 0; i < Obj.VertInfo.Length; i++)
+    for (unsigned int i = 0; i < VertNum; i++)
     {
-        Obj.ProjVerts[i].x = Cam.x + Cam.z * ((Obj.RawVerts[i].x - Cam.x) / (Obj.RawVerts[i].z + Cam.z));
-        Obj.ProjVerts[i].y = Cam.y + Cam.z * ((Obj.RawVerts[i].y - Cam.y) / (Obj.RawVerts[i].z + Cam.z));
+        ProjVerts[i].x = Cam.x + Cam.z * ((RawVerts[i].x - Cam.x) / (RawVerts[i].z + Cam.z));
+        ProjVerts[i].y = Cam.y + Cam.z * ((RawVerts[i].y - Cam.y) / (RawVerts[i].z + Cam.z));
     }
 }
 
@@ -97,24 +102,24 @@ void getProjVerts(obj_t Obj, threeD_t Cam)
 /* Converte as coordenadas cartesianas abstratas do vetor de vértices bidimensionais /
 ** para coordenadas de tela                                                         */
 
-void convertToScrCoords(obj_t Obj, unsigned int W, unsigned int H)
+void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H)
 {
     float Xmax, Xmin, Ymax, Ymin;
-    Xmax = Xmin = Obj.ProjVerts[0].x;
-    Ymax = Ymin = Obj.ProjVerts[0].y;
-    for (unsigned int i = 1; i < Obj.VertInfo.Length; i++)
+    Xmax = Xmin = ProjVerts[0].x;
+    Ymax = Ymin = ProjVerts[0].y;
+    for (unsigned int i = 1; i < VertNum; i++)
     {
-        if (Obj.ProjVerts[i].x > Xmax)
-            Xmax = Obj.ProjVerts[i].x;
+        if (ProjVerts[i].x > Xmax)
+            Xmax = ProjVerts[i].x;
 
-        if (Obj.ProjVerts[i].x < Xmin)
-            Xmin = Obj.ProjVerts[i].x;
+        if (ProjVerts[i].x < Xmin)
+            Xmin = ProjVerts[i].x;
 
-        if (Obj.ProjVerts[i].y > Ymax)
-            Ymax = Obj.ProjVerts[i].y;
+        if (ProjVerts[i].y > Ymax)
+            Ymax = ProjVerts[i].y;
 
-        if (Obj.ProjVerts[i].y < Ymin)
-            Ymin = Obj.ProjVerts[i].y;
+        if (ProjVerts[i].y < Ymin)
+            Ymin = ProjVerts[i].y;
     }
 
     float Xcen = (Xmax + Xmin) / 2;
@@ -132,10 +137,10 @@ void convertToScrCoords(obj_t Obj, unsigned int W, unsigned int H)
     else
         Scale = Scy;
 
-    for (unsigned int j = 0; j < Obj.VertInfo.Length; j++)
+    for (unsigned int j = 0; j < VertNum; j++)
     {
-        Obj.ProjVerts[j].x = ((Obj.ProjVerts[j].x - Xcen) * Scale) + W / 2;
-        Obj.ProjVerts[j].y = ((Obj.ProjVerts[j].y - Ycen) * Scale) + H / 2;
+        ProjVerts[j].x = ((ProjVerts[j].x - Xcen) * Scale) + W / 2;
+        ProjVerts[j].y = ((ProjVerts[j].y - Ycen) * Scale) + H / 2;
     }
 }
 

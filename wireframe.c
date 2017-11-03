@@ -55,17 +55,23 @@ int main(int argc, char *argv[])
 
     obj_t Object;
     initObj(&Object);
-    readFile(path, &Object.VertInfo, &Object.FaceInfo);
+    readFile(path, Object.VertInfo, Object.FaceInfo);
 
-    getRawVerts(&Object);
+    Object.RawVerts = getRawVerts(Object.VertInfo, &Object.VertNum);
 
+    // Isso deveria ir em outro lugar...
+    Object.ProjVerts = Malloc(sizeof(twoD_t) * Object.VertNum);
+
+    /*****/
     threeD_t Camera;
     Camera.x = 10;    
     Camera.y = 10;    
     Camera.z = 10;    
-    getProjVerts(Object, Camera);
+    /*****/
 
-    convertToScrCoords(Object, 800, 600);
+    getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
+
+    convertToScrCoords(Object.ProjVerts, Object.VertNum, 800, 600);
 
     exit(EXIT_SUCCESS);
 }
