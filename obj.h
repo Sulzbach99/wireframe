@@ -3,4 +3,6 @@
 
 #include "common.h"
 
+#define MAXFLOATSIZE 30
+
 #endif

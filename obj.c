@@ -4,7 +4,7 @@ void getVerts(list_t *Verts)
 {
     cell_t *Cell = FIRSTCELL(Verts);
     threeD_t *Coord;
-    char *ptr, X[MAXLINESIZE], Y[MAXLINESIZE], Z[MAXLINESIZE];
+    char *ptr, X[MAXFLOATSIZE], Y[MAXFLOATSIZE], Z[MAXFLOATSIZE];
     unsigned short i = 2, j;
 
     while (Cell)
