@@ -139,8 +139,8 @@ void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W,
 
     for (unsigned int j = 0; j < VertNum; j++)
     {
-        ProjVerts[j].x = ((ProjVerts[j].x - Xcen) * Scale) + W / 2;
-        ProjVerts[j].y = ((ProjVerts[j].y - Ycen) * Scale) + H / 2;
+        ProjVerts[j].x = ((ProjVerts[j].x - Xcen) * Scale * 0.95) + W / 2;
+        ProjVerts[j].y = ((ProjVerts[j].y - Ycen) * Scale * 0.95) + H / 2;
     }
 }
 

@@ -1,5 +1,5 @@
 #include <string.h>
-#include "obj.h"
+#include "graphics.h"
 
 #define MAXPATHSIZE 50
 #define MAXLINESIZE 50
@@ -72,6 +72,8 @@ int main(int argc, char *argv[])
     getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
 
     convertToScrCoords(Object.ProjVerts, Object.VertNum, 800, 600);
+
+    plotDots(Object.ProjVerts, Object.VertNum, 800, 600);
 
     exit(EXIT_SUCCESS);
 }
