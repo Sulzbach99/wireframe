@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string.h>
 #include "obj.h"
 
@@ -61,6 +60,14 @@ int main(int argc, char *argv[])
     readFile(path, &Object.VertInfo, &Object.FaceInfo);
 
     getRawVerts(&Object);
+
+    threeD_t Camera;
+    Camera.x = 10;    
+    Camera.y = 10;    
+    Camera.z = 10;    
+    getProjVerts(Object, Camera);
+
+    convertToScrCoords(Object, 800, 600);
 
     exit(EXIT_SUCCESS);
 }

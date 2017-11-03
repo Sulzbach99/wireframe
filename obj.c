@@ -4,13 +4,13 @@
 ** preencher um vetor de vértices tridimensionais. VertInfo é esvaziada /
 ** no processo                                                         */
 
-void getRawVerts(obj_t Obj)
+void getRawVerts(obj_t *Obj)
 {
-    cell_t *Cell = Obj.VertInfo.First;
+    cell_t *Cell = Obj->VertInfo.First;
     char *ptr, X[MAXFLOATSIZE], Y[MAXFLOATSIZE], Z[MAXFLOATSIZE];
     unsigned short i = 2, j, k = 0;
 
-    Obj.RawVerts = Malloc(sizeof(threeD_t) * Obj.VertInfo.Length);
+    Obj->RawVerts = Malloc(sizeof(threeD_t) * Obj->VertInfo.Length);
 
     while (Cell)
     {
@@ -47,20 +47,20 @@ void getRawVerts(obj_t Obj)
 
         free(ptr);
 
-        Obj.RawVerts[k].x = atof(X);
-        Obj.RawVerts[k].y = atof(Y);
-        Obj.RawVerts[k].z = atof(Z);
+        Obj->RawVerts[k].x = atof(X);
+        Obj->RawVerts[k].y = atof(Y);
+        Obj->RawVerts[k].z = atof(Z);
 
         k++;
 
-        removeCell(&Obj.VertInfo);
-        Cell = Obj.VertInfo.First;
+        removeCell(&Obj->VertInfo);
+        Cell = Obj->VertInfo.First;
     }
 
-    Obj.VertInfo.Last = NULL;
+    Obj->VertInfo.Last = NULL;
 
     // Isso deveria ir em outro lugar...
-    Obj.ProjVerts = Malloc(sizeof(twoD_t) * Obj.VertInfo.Length);
+    Obj->ProjVerts = Malloc(sizeof(twoD_t) * Obj->VertInfo.Length);
 }
 
 /***********************************************************************/
@@ -82,7 +82,7 @@ void getProjVerts(obj_t Obj, threeD_t Cam)
 /* Converte as coordenadas cartesianas abstratas do vetor de vértices bidimensionais /
 ** para coordenadas de tela                                                         */
 
-void convert(obj_t Obj, unsigned int W, unsigned int H)
+void convertToScrCoords(obj_t Obj, unsigned int W, unsigned int H)
 {
     float Xmax, Xmin, Ymax, Ymin;
     Xmax = Xmin = Obj.ProjVerts[0].x;
