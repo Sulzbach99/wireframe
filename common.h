@@ -52,7 +52,7 @@ typedef struct {
 
 typedef struct {
 
-    list_t *VertInfo;
+    list_t VertInfo;
     threeD_t *RawVerts;
     twoD_t *ProjVerts;
     float Xmin, Ymin;
@@ -60,7 +60,7 @@ typedef struct {
     float Xcen, Ycen;
     float Xdif, Ydif;
     float Scale;
-    list_t *FaceInfo;
+    list_t FaceInfo;
     edge_t *Edges;
 
 } obj_t;
