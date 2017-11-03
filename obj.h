@@ -54,6 +54,7 @@ typedef struct {
 
 #define MAXFLOATSIZE 30
 
+void initObj(obj_t *Obj);
 void getRawVerts(obj_t *Obj);
 void getProjVerts(obj_t Obj, threeD_t Cam);
 void convertToScrCoords(obj_t Obj, unsigned int W, unsigned int H);

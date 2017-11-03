@@ -1,5 +1,20 @@
 #include "obj.h"
 
+/* Inicializa o objeto */
+
+void initObj(obj_t *Obj)
+{
+    initList(&Obj->VertInfo);
+    initList(&Obj->FaceInfo);
+    initList(&Obj->EdgeInfo);
+
+    Obj->RawVerts = NULL;
+    Obj->ProjVerts = NULL;
+    Obj->Edges = NULL;
+}
+
+/***********************/
+
 /* Faz uso de todas as informações listadas em VertInfo para alocar e   /
 ** preencher um vetor de vértices tridimensionais. VertInfo é esvaziada /
 ** no processo                                                         */

@@ -54,8 +54,7 @@ int main(int argc, char *argv[])
     parseArgs(argc, argv, path);
 
     obj_t Object;
-    initList(&Object.VertInfo);
-    initList(&Object.FaceInfo);
+    initObj(&Object);
     readFile(path, &Object.VertInfo, &Object.FaceInfo);
 
     getRawVerts(&Object);
