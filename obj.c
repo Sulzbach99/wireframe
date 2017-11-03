@@ -78,7 +78,7 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
         removeCell(VertInfo);
         Cell = VertInfo->First;
     }
-    VertInfo->Last = NULL;
+    free(VertInfo);
 
     return RawVerts;
 }
@@ -145,3 +145,91 @@ void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W,
 }
 
 /************************************************************************************/
+
+/* Preenche a lista EdgeInfo à partir de FaceInfo, que é esvaziada no processo, /
+** posteriormente, EdgeInfo é esvaziada, gerando o vetor Edges                 */
+
+edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
+{
+    char *ptr, First[MAXINTSIZE], Prev[MAXINTSIZE], Next[MAXINTSIZE];
+    unsigned int i, j;
+    edge_t *Edge;
+    cell_t *Cell = FaceInfo->First;
+    while (Cell)
+    {
+        ptr = (char *) Cell->Item;
+
+        i = 2;
+        j = 0;
+        while (ptr[i] != ' ' && ptr[i] != '/' && ptr[i] != '\n')
+        {
+            First[j] = ptr[i];
+            i++;
+            j++;
+        }
+        First[j] = '\0';
+
+        strcpy(Prev, First);
+
+        while (ptr[i] != '\0')
+        {
+            while (ptr[i] != '\0' && !(ptr[i] >= '0' && ptr[i] <= '9'))
+                i++;
+
+            j = 0;
+            while (ptr[i] != ' ' && ptr[i] != '/' && ptr[i] != '\n' && ptr[i] != '\0')
+            {
+                Next[j] = ptr[i];
+                i++;
+                j++;
+            }
+            Next[j] = '\0';
+
+            Edge = Malloc(sizeof(edge_t));
+            Edge->Start = atoi(Prev) - 1;
+            Edge->End = atoi(Next) - 1;
+
+            createCell(EdgeInfo);
+            appendItem(EdgeInfo->Last, Edge);
+
+            strcpy(Prev, Next);
+        }
+        free(ptr);
+
+        Edge = Malloc(sizeof(edge_t));
+        Edge->Start = atoi(Next) - 1;
+        Edge->End = atoi(First) - 1;
+
+        createCell(EdgeInfo);
+        appendItem(EdgeInfo->Last, Edge);
+
+        removeCell(FaceInfo);
+        Cell = FaceInfo->First;
+    }
+    free(FaceInfo);
+
+    *EdgeNum = EdgeInfo->Length;
+    edge_t *Edges = Malloc(sizeof(edge_t) * (*EdgeNum));
+
+    i = 0;
+    Cell = EdgeInfo->First;
+    while (Cell)
+    {
+        Edge = (edge_t *) Cell->Item;
+
+        Edges[i].Start = Edge->Start;
+        Edges[i].End = Edge->End;
+
+        free(Edge);
+
+        i++;
+
+        removeCell(EdgeInfo);
+        Cell = EdgeInfo->First;
+    }
+    free(EdgeInfo);
+
+    return Edges;
+}
+
+/*******************************************************************************/

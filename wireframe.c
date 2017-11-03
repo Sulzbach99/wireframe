@@ -1,4 +1,3 @@
-#include <string.h>
 #include "graphics.h"
 
 #define MAXPATHSIZE 50
@@ -72,6 +71,8 @@ int main(int argc, char *argv[])
     getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
 
     convertToScrCoords(Object.ProjVerts, Object.VertNum, 800, 600);
+
+    Object.Edges = getEdges(Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo);
 
     plotDots(Object.ProjVerts, Object.VertNum, 800, 600);
 
