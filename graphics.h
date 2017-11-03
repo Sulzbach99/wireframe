@@ -5,6 +5,6 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include "obj.h"
 
-void plotDots(twoD_t *Dots, unsigned int DotsNum, unsigned int WIDTH, unsigned int HEIGHT);
+void plotObj(twoD_t *Verts, unsigned int VertsNum, edge_t *Edges, unsigned int EdgeNum, unsigned int WIDTH, unsigned int HEIGHT);
 
 #endif

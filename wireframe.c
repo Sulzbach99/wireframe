@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
     Object.Edges = getEdges(Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo);
 
-    plotDots(Object.ProjVerts, Object.VertNum, 800, 600);
+    plotObj(Object.ProjVerts, Object.VertNum, Object.Edges, Object.EdgeNum, 800, 600);
 
     exit(EXIT_SUCCESS);
 }

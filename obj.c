@@ -185,19 +185,22 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
             }
             Next[j] = '\0';
 
-            Edge = Malloc(sizeof(edge_t));
-            Edge->Start = atoi(Prev) - 1;
-            Edge->End = atoi(Next) - 1;
+            if (ptr[i] != '\0')
+            {
+                Edge = Malloc(sizeof(edge_t));
+                Edge->Start = atoi(Prev) - 1;
+                Edge->End = atoi(Next) - 1;
 
-            createCell(EdgeInfo);
-            appendItem(EdgeInfo->Last, Edge);
+                createCell(EdgeInfo);
+                appendItem(EdgeInfo->Last, Edge);
 
-            strcpy(Prev, Next);
+                strcpy(Prev, Next);
+            }
         }
         free(ptr);
 
         Edge = Malloc(sizeof(edge_t));
-        Edge->Start = atoi(Next) - 1;
+        Edge->Start = atoi(Prev) - 1;
         Edge->End = atoi(First) - 1;
 
         createCell(EdgeInfo);

@@ -1,6 +1,6 @@
 #include "graphics.h"
 
-void plotDots(twoD_t *Dots, unsigned int DotsNum, unsigned int WIDTH, unsigned int HEIGHT)
+void plotObj(twoD_t *Verts, unsigned int VertsNum, edge_t *Edges, unsigned int EdgeNum, unsigned int WIDTH, unsigned int HEIGHT)
 { 
     SDL_Init(SDL_INIT_VIDEO);
     
@@ -22,8 +22,8 @@ void plotDots(twoD_t *Dots, unsigned int DotsNum, unsigned int WIDTH, unsigned i
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); 
         SDL_RenderClear(renderer);
 
-        for (unsigned int i = 0; i < DotsNum; i++)
-            pixelRGBA(renderer, Dots[i].x, Dots[i].y, 255, 255, 255, 100);
+        for (unsigned int i = 0; i < EdgeNum; i++)
+            lineRGBA(renderer, Verts[Edges[i].Start].x, Verts[Edges[i].Start].y, Verts[Edges[i].End].x, Verts[Edges[i].End].y, 255, 255, 255, 100);
 
         SDL_RenderPresent(renderer); 
     } 
