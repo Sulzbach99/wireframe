@@ -52,11 +52,6 @@ typedef struct {
     list_t VertInfo;
     threeD_t *RawVerts;
     twoD_t *ProjVerts;
-    float Xmin, Ymin;
-    float Xmax, Ymax;
-    float Xcen, Ycen;
-    float Xdif, Ydif;
-    float Scale;
     list_t FaceInfo;
     edge_t *Edges;
 

@@ -78,3 +78,50 @@ void getProjVerts(obj_t Obj, threeD_t Cam)
 }
 
 /*******************************************************************************/
+
+/* Converte as coordenadas cartesianas abstratas do vetor de vértices bidimensionais /
+** para coordenadas de tela                                                         */
+
+void convert(obj_t Obj, unsigned int W, unsigned int H)
+{
+    float Xmax, Xmin, Ymax, Ymin;
+    Xmax = Xmin = Obj.ProjVerts[0].x;
+    Ymax = Ymin = Obj.ProjVerts[0].y;
+    for (unsigned int i = 1; i < Obj.VertInfo.Length; i++)
+    {
+        if (Obj.ProjVerts[i].x > Xmax)
+            Xmax = Obj.ProjVerts[i].x;
+
+        if (Obj.ProjVerts[i].x < Xmin)
+            Xmin = Obj.ProjVerts[i].x;
+
+        if (Obj.ProjVerts[i].y > Ymax)
+            Ymax = Obj.ProjVerts[i].y;
+
+        if (Obj.ProjVerts[i].y < Ymin)
+            Ymin = Obj.ProjVerts[i].y;
+    }
+
+    float Xcen = (Xmax + Xmin) / 2;
+    float Xdif = Xmax - Xmin;
+
+    float Ycen = (Ymax + Ymin) / 2;
+    float Ydif = Ymax - Ymin;
+
+    float Scx = W / Xdif;
+    float Scy = H / Ydif;
+
+    float Scale;
+    if (Scx < Scy)
+        Scale = Scx;
+    else
+        Scale = Scy;
+
+    for (unsigned int j = 0; j < Obj.VertInfo.Length; j++)
+    {
+        Obj.ProjVerts[j].x = ((Obj.ProjVerts[j].x - Xcen) * Scale) + W / 2;
+        Obj.ProjVerts[j].y = ((Obj.ProjVerts[j].y - Ycen) * Scale) + H / 2;
+    }
+}
+
+/************************************************************************************/
