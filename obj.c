@@ -1,15 +1,20 @@
 #include "obj.h"
 
-void getVerts(list_t *Verts)
+/* Faz uso de todas as informações listadas em VertInfo para alocar e   /
+** preencher um vetor de vértices tridimensionais. VertInfo é esvaziada /
+** no processo                                                         */
+
+void getRawVerts(obj_t Obj)
 {
-    cell_t *Cell = FIRSTCELL(Verts);
-    threeD_t *Coord;
+    cell_t *Cell = Obj.VertInfo.First;
     char *ptr, X[MAXFLOATSIZE], Y[MAXFLOATSIZE], Z[MAXFLOATSIZE];
-    unsigned short i = 2, j;
+    unsigned short i = 2, j, k = 0;
+
+    Obj.RawVerts = Malloc(sizeof(threeD_t) * Obj.VertInfo.Length);
 
     while (Cell)
     {
-        ptr = (char *) CURRENTITEM(Cell);
+        ptr = (char *) Cell->Item;
 
         j = 0;
         while (ptr[i] != ' ')
@@ -42,32 +47,34 @@ void getVerts(list_t *Verts)
 
         free(ptr);
 
-        Coord = Malloc(sizeof(threeD_t));
+        Obj.RawVerts[k].x = atof(X);
+        Obj.RawVerts[k].y = atof(Y);
+        Obj.RawVerts[k].z = atof(Z);
 
-        GETX(Coord) = atof(X);
-        GETY(Coord) = atof(Y);
-        GETZ(Coord) = atof(Z);
+        k++;
 
-        appendItem(Cell, Coord);
-
-        Cell = NEXTCELL(Cell);
+        removeCell(&Obj.VertInfo);
+        Cell = Obj.VertInfo.First;
     }
+
+    Obj.VertInfo.Last = NULL;
+
+    // Isso deveria ir em outro lugar...
+    Obj.ProjVerts = Malloc(sizeof(twoD_t) * Obj.VertInfo.Length);
 }
 
-twoD_t *putInPerspective(list_t *Input, twoD_t *Output)
+/***********************************************************************/
+
+/* Aplica o cálculo de perspectiva, gerando um vetor de vértices bidimensionais /
+** a partir do vetor de vértices tridimensionais                               */
+
+void getProjVerts(obj_t Obj, threeD_t Cam)
 {
-    cell_t *Cell;
-    threeD_t *ptr;
-    unsigned int count = 0;
-
-    Output = Malloc(sizeof(twoD_t) * LISTLENGTH(Input));
-
-    while (Cell)
+    for (unsigned int i = 0; i < Obj.VertInfo.Length; i++)
     {
-        Cell = FIRSTCELL(Input);
-
-        ptr = (threeD_t *) CURRENTITEM(Cell);
-
-        GETX(Output[count]) = 
+        Obj.ProjVerts[i].x = Cam.x + Cam.z * ((Obj.RawVerts[i].x - Cam.x) / (Obj.RawVerts[i].z + Cam.z));
+        Obj.ProjVerts[i].y = Cam.y + Cam.z * ((Obj.RawVerts[i].y - Cam.y) / (Obj.RawVerts[i].z + Cam.z));
     }
 }
+
+/*******************************************************************************/

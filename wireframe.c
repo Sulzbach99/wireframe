@@ -37,14 +37,14 @@ void readFile(char *path, list_t *Verts, list_t *Faces)
             createCell(Verts);
             ptr = Malloc(strlen(line) + 1);
             strcpy(ptr, line);
-            appendItem(LASTCELL(Verts), ptr);
+            appendItem(Verts->Last, ptr);
         }
         else if (line[0] == 'f')
         {
             createCell(Faces);
             ptr = Malloc(strlen(line) + 1);
             strcpy(ptr, line);
-            appendItem(LASTCELL(Faces), ptr);
+            appendItem(Faces->Last, ptr);
         }
 
     fclose(OBJS);
@@ -55,10 +55,10 @@ int main(int argc, char *argv[])
     char path[MAXPATHSIZE];
     parseArgs(argc, argv, path);
 
-    list_t Verts, Faces;
-    readFile(path, &Verts, &Faces);
+    obj_t Object;
+    readFile(path, &Object.VertInfo, &Object.FaceInfo);
 
-    getVerts(&Verts);
+    getRawVerts(&Object);
 
     exit(EXIT_SUCCESS);
 }
