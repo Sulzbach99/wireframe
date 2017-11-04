@@ -63,9 +63,9 @@ int main(int argc, char *argv[])
 
     /*****/
     threeD_t Camera;
-    Camera.x = 50;    
-    Camera.y = 50;    
-    Camera.z = 50;    
+    Camera.x = 1;    
+    Camera.y = 1;    
+    Camera.z = -1;    
     /*****/
 
     getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
