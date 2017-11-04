@@ -60,7 +60,7 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
         i++;
 
         j = 0;
-        while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.')
+        while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.' || ptr[i] == '-')
         {
             Z[j] = ptr[i];
             i++;
@@ -141,7 +141,7 @@ void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W,
     for (unsigned int j = 0; j < VertNum; j++)
     {
         ProjVerts[j].x = ((ProjVerts[j].x - Xcen) * Scale * 0.95) + W / 2;
-        ProjVerts[j].y = ((ProjVerts[j].y - Ycen) * Scale * 0.95) + H / 2;
+        ProjVerts[j].y = -((ProjVerts[j].y - Ycen) * Scale * 0.95) + H / 2;
     }
 }
 
