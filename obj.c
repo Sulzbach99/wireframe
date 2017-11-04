@@ -174,20 +174,23 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
 
         while (ptr[i] != '\0')
         {
-            while (ptr[i] != '\0' && !(ptr[i] >= '0' && ptr[i] <= '9'))
+            while (ptr[i] != ' ' && ptr[i] != '\0')
+                i++;
+
+            if (ptr[i] == ' ')
                 i++;
 
             j = 0;
-            while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.')
+            while (ptr[i] >= '0' && ptr[i] <= '9')
             {
                 Next[j] = ptr[i];
                 i++;
                 j++;
             }
-            Next[j] = '\0';
-
-            if (ptr[i] != '\0')
+            if (j)
             {
+                Next[j] = '\0';
+
                 Edge = Malloc(sizeof(edge_t));
                 Edge->Start = atoi(Prev) - 1;
                 Edge->End = atoi(Next) - 1;

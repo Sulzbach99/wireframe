@@ -23,10 +23,9 @@ void plotObj(twoD_t *Verts, unsigned int VertsNum, edge_t *Edges, unsigned int E
         SDL_RenderClear(renderer);
 
         for (unsigned int i = 0; i < EdgeNum; i++)
-        {
-            lineRGBA(renderer, Verts[Edges[i].Start].x, Verts[Edges[i].Start].y, Verts[Edges[i].End].x, Verts[Edges[i].End].y, 255, 255, 255, 100);
-            SDL_RenderPresent(renderer);
-        }
+            lineRGBA(renderer, Verts[Edges[i].Start].x, Verts[Edges[i].Start].y, Verts[Edges[i].End].x, Verts[Edges[i].End].y, 255, 255, 255, 50);
+
+        SDL_RenderPresent(renderer);
     } 
     
     SDL_DestroyRenderer(renderer); 
