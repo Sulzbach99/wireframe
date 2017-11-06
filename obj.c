@@ -38,7 +38,10 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
     {
         ptr = (char *) Cell->Item;
 
-        i = 2;
+        i = 1;
+        while (!(ptr[i] >= '0' && ptr[i] <= '9') && ptr[i] != '-')
+            i++;
+
         j = 0;
         while (ptr[i] != ' ')
         {
@@ -47,7 +50,9 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
             j++;
         }
         X[j] = '\0';
-        i++;
+
+        while (!(ptr[i] >= '0' && ptr[i] <= '9') && ptr[i] != '-')
+            i++;
 
         j = 0;
         while (ptr[i] != ' ')
@@ -57,7 +62,9 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
             j++;
         }
         Y[j] = '\0';
-        i++;
+
+        while (!(ptr[i] >= '0' && ptr[i] <= '9') && ptr[i] != '-')
+            i++;
 
         j = 0;
         while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.' || ptr[i] == '-')
@@ -160,9 +167,12 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
     {
         ptr = (char *) Cell->Item;
 
-        i = 2;
+        i = 1;
+        while (ptr[i] < '0' || ptr[i] > '9')
+            i++;
+
         j = 0;
-        while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.')
+        while (ptr[i] >= '0' && ptr[i] <= '9')
         {
             First[j] = ptr[i];
             i++;
@@ -178,6 +188,7 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
                 i++;
 
             if (ptr[i] == ' ')
+            // while (ptr[i] < '0' && ptr[i] > '9' && ptr[i] != '\0')
                 i++;
 
             j = 0;
