@@ -96,12 +96,31 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
 /* Aplica o cálculo de perspectiva, gerando um vetor de vértices bidimensionais /
 ** a partir do vetor de vértices tridimensionais                               */
 
-void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, threeD_t Cam)
+void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, threeD_t *Cam)
 {
+    float Xmax, Ymax, Zmax;
+    Xmax = RawVerts[0].x;
+    Ymax = RawVerts[0].y;
+    Zmax = RawVerts[0].z;
+    for (unsigned int i = 1; i < VertNum; i++)
+    {
+        if (RawVerts[i].x > Xmax)
+            Xmax = RawVerts[i].x;
+
+        if (RawVerts[i].y > Ymax)
+            Ymax = RawVerts[i].y;
+
+        if (RawVerts[i].z > Zmax)
+            Zmax = RawVerts[i].z;
+    }
+    Cam->x = Xmax * 1.5;
+    Cam->y = Ymax * 1.5;
+    Cam->z = Zmax * 1.5;
+
     for (unsigned int i = 0; i < VertNum; i++)
     {
-        ProjVerts[i].x = Cam.x + Cam.z * ((RawVerts[i].x - Cam.x) / (RawVerts[i].z + Cam.z));
-        ProjVerts[i].y = Cam.y + Cam.z * ((RawVerts[i].y - Cam.y) / (RawVerts[i].z + Cam.z));
+        ProjVerts[i].x = Cam->x + Cam->z * ((RawVerts[i].x - Cam->x) / (RawVerts[i].z + Cam->z));
+        ProjVerts[i].y = Cam->y + Cam->z * ((RawVerts[i].y - Cam->y) / (RawVerts[i].z + Cam->z));
     }
 }
 
@@ -187,8 +206,7 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
             while (ptr[i] != ' ' && ptr[i] != '\0')
                 i++;
 
-            if (ptr[i] == ' ')
-            // while (ptr[i] < '0' && ptr[i] > '9' && ptr[i] != '\0')
+            while ((ptr[i] < '0' || ptr[i] > '9') && ptr[i] != '\0')
                 i++;
 
             j = 0;
