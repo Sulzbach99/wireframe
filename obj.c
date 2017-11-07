@@ -97,7 +97,7 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
 
 void initCam(threeD_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 {
-    float Xmax, Ymax, Zmax;
+    double Xmax, Ymax, Zmax;
     Xmax = RawVerts[0].x;
     Ymax = RawVerts[0].y;
     Zmax = RawVerts[0].z;
@@ -112,9 +112,9 @@ void initCam(threeD_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
         if (RawVerts[i].z > Zmax)
             Zmax = RawVerts[i].z;
     }
-    Cam->x = Xmax * 1.5;
-    Cam->y = Ymax * 1.5;
-    Cam->z = Zmax * 1.5;
+    Cam->x = 0;
+    Cam->y = Ymax * 2;
+    Cam->z = Zmax * 2;
 }
 
 /***********************/
@@ -123,16 +123,21 @@ void initCam(threeD_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 
 void moveCam(threeD_t *Cam, char dir)
 {
-    if (dir == 3)
+    if (dir == 1)
     {
-        Cam->x -= 0.01;
-        Cam->y -= 0.01;
+        Cam->y -= 0.1;
     }
-
-    if (dir == 4)
+    else if (dir == 2)
     {
-        Cam->x += 0.01;
-        Cam->y += 0.01;
+        Cam->y += 0.1;
+    }
+    else if (dir == 3)
+    {
+        Cam->z -= 0.1;
+    }
+    else if (dir == 4)
+    {
+        Cam->z += 0.1;
     }
 }
 
@@ -157,7 +162,7 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, t
 
 void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H)
 {
-    float Xmax, Xmin, Ymax, Ymin;
+    double Xmax, Xmin, Ymax, Ymin;
     Xmax = Xmin = ProjVerts[0].x;
     Ymax = Ymin = ProjVerts[0].y;
     for (unsigned int i = 1; i < VertNum; i++)
@@ -175,16 +180,16 @@ void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W,
             Ymin = ProjVerts[i].y;
     }
 
-    float Xcen = (Xmax + Xmin) / 2;
-    float Xdif = Xmax - Xmin;
+    double Xcen = (Xmax + Xmin) / 2;
+    double Xdif = Xmax - Xmin;
 
-    float Ycen = (Ymax + Ymin) / 2;
-    float Ydif = Ymax - Ymin;
+    double Ycen = (Ymax + Ymin) / 2;
+    double Ydif = Ymax - Ymin;
 
-    float Scx = W / Xdif;
-    float Scy = H / Ydif;
+    double Scx = W / Xdif;
+    double Scy = H / Ydif;
 
-    float Scale;
+    double Scale;
     if (Scx < Scy)
         Scale = Scx;
     else

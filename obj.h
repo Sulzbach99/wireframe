@@ -9,8 +9,8 @@
 
 typedef struct {
 
-    float x;
-    float y;
+    double x;
+    double y;
 
 } twoD_t;
 
@@ -20,9 +20,9 @@ typedef struct {
 
 typedef struct {
 
-    float x;
-    float y;
-    float z;
+    double x;
+    double y;
+    double z;
 
 } threeD_t;
 
@@ -55,6 +55,18 @@ typedef struct {
     edge_t *Edges;
 
 } obj_t;
+
+/**********/
+
+/* Câmera */
+
+typedef struct {
+
+    threeD_t Coords;
+    double Ang1;
+    double Ang2;
+
+} cam_t;
 
 /**********/
 

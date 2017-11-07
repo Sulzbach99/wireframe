@@ -75,6 +75,7 @@ int main(int argc, char *argv[])
     while (status)
     {
         moveCam(&Camera, status);
+        printf("%f %f %f\n", Camera.x, Camera.y, Camera.z);
         getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
         convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT);
         status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera);
