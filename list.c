@@ -58,3 +58,22 @@ void appendItem(cell_t *Cell, void *Addr)
 {
     CURRENTITEM(Cell) = Addr;
 }
+
+/* Confere se dado elemento está listado em dada lista */
+
+char isInList(list_t *List, void *key, char (*comp)(const void *, const void *))
+{
+    cell_t *Cell = FIRSTCELL(List);
+
+    while (Cell)
+    {
+        if (!comp(CURRENTITEM(Cell), key))
+            return 1;
+
+        Cell = NEXTCELL(Cell);
+    }
+
+    return 0;
+}
+
+/*******************************************************/

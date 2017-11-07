@@ -176,6 +176,20 @@ void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W,
 /* Preenche a lista EdgeInfo à partir de FaceInfo, que é esvaziada no processo, /
 ** posteriormente, EdgeInfo é esvaziada, gerando o vetor Edges                 */
 
+static char compareEdges(const void *a, const void *b)
+{
+    edge_t *A = (edge_t *) a;
+    edge_t *B = (edge_t *) b;
+
+    if (A->Start == B->Start && A->End == B->End)
+        return 0;
+
+    if (A->Start == B->End && A->End == B->Start)
+        return 0;
+
+    return 1;
+}
+
 edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
 {
     char *ptr, First[MAXINTSIZE], Prev[MAXINTSIZE], Next[MAXINTSIZE];
@@ -224,8 +238,13 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
                 Edge->Start = atoi(Prev) - 1;
                 Edge->End = atoi(Next) - 1;
 
-                createCell(EdgeInfo);
-                appendItem(EdgeInfo->Last, Edge);
+                if (!isInList(EdgeInfo, Edge, compareEdges))
+                {
+                    createCell(EdgeInfo);
+                    appendItem(EdgeInfo->Last, Edge);
+                }
+                else
+                    free(Edge);
 
                 strcpy(Prev, Next);
             }
