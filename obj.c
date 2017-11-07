@@ -148,10 +148,33 @@ void moveCam(threeD_t *Cam, char dir)
 
 void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, threeD_t Cam)
 {
+    threeD_t ProjCenter, CurrentVert;
+    double d, lambda;
+
+    /* Centro do plano em que a imagem é projetada */
+    ProjCenter.x = -2 * Cam.x;
+    ProjCenter.y = -2 * Cam.y;
+    ProjCenter.z = -2 * Cam.z;
+
     for (unsigned int i = 0; i < VertNum; i++)
     {
-        ProjVerts[i].x = Cam.x + Cam.z * ((RawVerts[i].x - Cam.x) / (RawVerts[i].z + Cam.z));
-        ProjVerts[i].y = Cam.y + Cam.z * ((RawVerts[i].y - Cam.y) / (RawVerts[i].z + Cam.z));
+        /* Os pontos são redefinidos num sistema em que a câmera é a origem */
+        CurrentVert.x = RawVerts[i].x - Cam.x;
+        CurrentVert.y = RawVerts[i].y - Cam.y;
+        CurrentVert.z = RawVerts[i].z - Cam.z;
+
+        /* Termo independente da equação geral do plano */
+        d = pow(ProjCenter.x, 2) + pow(ProjCenter.y, 2) + pow(ProjCenter.z, 2);
+
+        /* Fator escalar que quando multiplica o vértice resulta no vetor que dá origem ao vértice projetado no plano */
+        lambda = d / (ProjCenter.x * CurrentVert.x + ProjCenter.y * CurrentVert.y + ProjCenter.z * CurrentVert.z);
+
+        CurrentVert.x *= lambda;
+        CurrentVert.y *= lambda;
+        CurrentVert.z *= lambda;
+
+        ProjVerts[i].x = CurrentVert.x;
+        ProjVerts[i].y = CurrentVert.y;
     }
 }
 
