@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
     char status;
     initGraphics();
-    while (status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum))
+    while (status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera))
     {
         moveCam(&Camera, status);
         getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);

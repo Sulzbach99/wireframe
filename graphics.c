@@ -13,7 +13,7 @@ void initGraphics()
 
 /* Plota o objeto, desenhando as arestas */
 
-char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum)
+char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam)
 { 
     SDL_Event e; 
     
