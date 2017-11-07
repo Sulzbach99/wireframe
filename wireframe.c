@@ -62,6 +62,8 @@ int main(int argc, char *argv[])
     Object.ProjVerts = Malloc(sizeof(twoD_t) * Object.VertNum);
 
     threeD_t Camera;
+    initCam(&Camera, Object.RawVerts, Object.VertNum);
+
     getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
 
     convertToScrCoords(Object.ProjVerts, Object.VertNum, 800, 600);
