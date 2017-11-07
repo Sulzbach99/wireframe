@@ -66,16 +66,16 @@ int main(int argc, char *argv[])
 
     getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
 
-    convertToScrCoords(Object.ProjVerts, Object.VertNum, 800, 600);
+    convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT);
 
     Object.Edges = getEdges(Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo);
 
     initGraphics();
-    while (plotObj(Object.ProjVerts, Object.VertNum, Object.Edges, Object.EdgeNum, 800, 600))
+    while (plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum))
     {
-        moveCam();
-        getProjVerts();
-        convertToScrCoords();
+        //moveCam();
+        getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
+        convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT);
     }
     killGraphics();
 

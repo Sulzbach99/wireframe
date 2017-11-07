@@ -3,6 +3,7 @@
 
 #include "list.h"
 #include <string.h>
+#include <math.h>
 
 /* Coordenada bidimensional */
 
