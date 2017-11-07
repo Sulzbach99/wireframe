@@ -62,13 +62,20 @@ int main(int argc, char *argv[])
     Object.ProjVerts = Malloc(sizeof(twoD_t) * Object.VertNum);
 
     threeD_t Camera;
-    getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, &Camera);
+    getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
 
     convertToScrCoords(Object.ProjVerts, Object.VertNum, 800, 600);
 
     Object.Edges = getEdges(Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo);
 
-    plotObj(Object.ProjVerts, Object.VertNum, Object.Edges, Object.EdgeNum, 800, 600);
+    initGraphics();
+    while (plotObj(Object.ProjVerts, Object.VertNum, Object.Edges, Object.EdgeNum, 800, 600))
+    {
+        moveCam();
+        getProjVerts();
+        convertToScrCoords();
+    }
+    killGraphics();
 
     exit(EXIT_SUCCESS);
 }

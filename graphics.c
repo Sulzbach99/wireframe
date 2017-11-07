@@ -1,6 +1,6 @@
 #include "graphics.h"
 
-void plotObj(twoD_t *Verts, unsigned int VertsNum, edge_t *Edges, unsigned int EdgeNum, unsigned int WIDTH, unsigned int HEIGHT)
+char plotObj(twoD_t *Verts, unsigned int VertsNum, edge_t *Edges, unsigned int EdgeNum, unsigned int WIDTH, unsigned int HEIGHT)
 { 
     SDL_Init(SDL_INIT_VIDEO);
     
@@ -10,13 +10,19 @@ void plotObj(twoD_t *Verts, unsigned int VertsNum, edge_t *Edges, unsigned int E
     
     SDL_Event e; 
     
-    int quit = 0; 
-    while (!quit) 
+    signed char status = -1; 
+    while (status == -1) 
     { 
         if (SDL_PollEvent(&e)) 
         { 
             if (e.type == SDL_QUIT) 
-                quit = 1; 
+                status = 0;
+
+            if (e.type == SDL_KEYDOWN)
+                if (e.key.keysym.sym == SDLK_LEFT)
+                    status = 1;
+                else if (e.key.keysym.sym == SDLK_RIGHT)
+                    status = 2;
         }
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); 
@@ -30,5 +36,7 @@ void plotObj(twoD_t *Verts, unsigned int VertsNum, edge_t *Edges, unsigned int E
     
     SDL_DestroyRenderer(renderer); 
     SDL_DestroyWindow(window); 
-    SDL_Quit(); 
+    SDL_Quit();
+
+    return status;
 }

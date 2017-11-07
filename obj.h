@@ -62,7 +62,8 @@ typedef struct {
 
 void initObj(obj_t *Obj);
 threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum);
-void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, threeD_t *Cam);
+void initCam(threeD_t *Cam, threeD_t *RawVerts, unsigned int VertNum);
+void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, threeD_t Cam);
 void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H);
 edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo);
 
