@@ -5,6 +5,14 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include "obj.h"
 
-char plotObj(twoD_t *Verts, unsigned int VertsNum, edge_t *Edges, unsigned int EdgeNum, unsigned int WIDTH, unsigned int HEIGHT);
+#define WIDTH 800
+#define HEIGHT 600
+
+SDL_Window *window;
+SDL_Renderer *renderer;
+
+void initGraphics();
+char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum);
+void killGraphics();
 
 #endif

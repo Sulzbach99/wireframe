@@ -1,13 +1,20 @@
 #include "graphics.h"
 
-char plotObj(twoD_t *Verts, unsigned int VertsNum, edge_t *Edges, unsigned int EdgeNum, unsigned int WIDTH, unsigned int HEIGHT)
-{ 
+/* Inicializa o SDL2 */
+
+void initGraphics()
+{
     SDL_Init(SDL_INIT_VIDEO);
-    
-    SDL_Window *window = SDL_CreateWindow("Wireframe", 100, 100, WIDTH, HEIGHT, SDL_WINDOW_OPENGL); 
-    
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); 
-    
+    window = SDL_CreateWindow("Wireframe", 100, 100, WIDTH, HEIGHT, SDL_WINDOW_OPENGL); 
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); 
+}
+
+/*********************/
+
+/* Plota o objeto, desenhando as arestas */
+
+char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum)
+{ 
     SDL_Event e; 
     
     signed char status = -1; 
@@ -33,10 +40,19 @@ char plotObj(twoD_t *Verts, unsigned int VertsNum, edge_t *Edges, unsigned int E
 
         SDL_RenderPresent(renderer);
     } 
-    
-    SDL_DestroyRenderer(renderer); 
-    SDL_DestroyWindow(window); 
-    SDL_Quit();
 
     return status;
 }
+
+/*****************************************/
+
+/* Finaliza o SDL2 */
+
+void killGraphics()
+{
+    SDL_DestroyRenderer(renderer); 
+    SDL_DestroyWindow(window); 
+    SDL_Quit();
+}
+
+/*******************/
