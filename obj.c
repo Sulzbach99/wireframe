@@ -255,8 +255,13 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
         Edge->Start = atoi(Prev) - 1;
         Edge->End = atoi(First) - 1;
 
-        createCell(EdgeInfo);
-        appendItem(EdgeInfo->Last, Edge);
+        if (!isInList(EdgeInfo, Edge, compareEdges))
+        {
+            createCell(EdgeInfo);
+            appendItem(EdgeInfo->Last, Edge);
+        }
+        else
+            free(Edge);
 
         removeCell(FaceInfo);
         Cell = FaceInfo->First;
