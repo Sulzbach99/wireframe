@@ -120,13 +120,22 @@ void initCam(threeD_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 /***********************/
 
 /* Recalcula o ângulo da câmera */
-/*
+
 void moveCam(threeD_t *Cam, char dir)
 {
-    float Dist = sqrt(pow(Cam->x, 2) + pow(Cam->y, 2));
-    float Ang = arccos()
+    if (dir == 3)
+    {
+        Cam->x -= 0.01;
+        Cam->y -= 0.01;
+    }
+
+    if (dir == 4)
+    {
+        Cam->x += 0.01;
+        Cam->y += 0.01;
+    }
 }
-*/
+
 /********************************/
 
 /* Aplica o cálculo de perspectiva, gerando um vetor de vértices bidimensionais /

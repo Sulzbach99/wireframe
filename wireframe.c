@@ -70,10 +70,11 @@ int main(int argc, char *argv[])
 
     Object.Edges = getEdges(Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo);
 
+    char status;
     initGraphics();
-    while (plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum))
+    while (status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum))
     {
-        //moveCam();
+        moveCam(&Camera, status);
         getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
         convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT);
     }

@@ -26,10 +26,16 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum)
                 status = 0;
 
             if (e.type == SDL_KEYDOWN)
+            {
                 if (e.key.keysym.sym == SDLK_LEFT)
                     status = 1;
                 else if (e.key.keysym.sym == SDLK_RIGHT)
                     status = 2;
+                else if (e.key.keysym.sym == SDLK_UP)
+                    status = 3;
+                else if (e.key.keysym.sym == SDLK_DOWN)
+                    status = 4;
+            }
         }
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); 
