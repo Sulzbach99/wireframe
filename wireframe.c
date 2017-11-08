@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     // Isso deveria ir em outro lugar...
     Object.ProjVerts = Malloc(sizeof(twoD_t) * Object.VertNum);
 
-    threeD_t Camera;
+    cam_t Camera;
     initCam(&Camera, Object.RawVerts, Object.VertNum);
 
     getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
@@ -71,14 +71,14 @@ int main(int argc, char *argv[])
     Object.Edges = getEdges(Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo);
 
     initGraphics();
-    char status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera);
+    char status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords);
     while (status)
     {
         moveCam(&Camera, status);
-        printf("%f %f %f\n", Camera.x, Camera.y, Camera.z);
+        printf("%f %f %f\n", Camera.Coords.x, Camera.Coords.y, Camera.Coords.z);
         getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
         convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT);
-        status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera);
+        status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords);
     }
     killGraphics();
 

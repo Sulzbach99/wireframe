@@ -95,49 +95,65 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
 
 /* Inicializa a câmera */
 
-void initCam(threeD_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
+void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 {
-    double Xmax, Ymax, Zmax;
-    Xmax = RawVerts[0].x;
-    Ymax = RawVerts[0].y;
-    Zmax = RawVerts[0].z;
+    double aux, h;
+    Cam->Radius = sqrt(pow(RawVerts[0].x, 2) + pow(RawVerts[0].y, 2) + pow(RawVerts[0].z, 2));
+    h = RawVerts[0].z;
     for (unsigned int i = 1; i < VertNum; i++)
     {
-        if (RawVerts[i].x > Xmax)
-            Xmax = RawVerts[i].x;
-
-        if (RawVerts[i].y > Ymax)
-            Ymax = RawVerts[i].y;
-
-        if (RawVerts[i].z > Zmax)
-            Zmax = RawVerts[i].z;
+        aux = sqrt(pow(RawVerts[0].x, 2) + pow(RawVerts[0].y, 2) + pow(RawVerts[0].z, 2));
+        if (aux > Cam->Radius)
+        {
+            Cam->Radius = aux;
+            h = RawVerts[i].z;
+        }
     }
-    Cam->x = 0;
-    Cam->y = Ymax * 2;
-    Cam->z = Zmax * 2;
+
+    Cam->Radius *= 2;
+    Cam->ProjRadius = sqrt(pow(Cam->Radius, 2) - pow(h, 2));
+
+    Cam->Coords.x = 0;
+    Cam->Coords.y = Cam->ProjRadius;
+    Cam->Coords.z = h;
+
+    Cam->AngXY = M_PI / 2;
+    Cam->AngZY = acos(Cam->Coords.z / Cam->Radius);
 }
 
 /***********************/
 
 /* Recalcula o ângulo da câmera */
 
-void moveCam(threeD_t *Cam, char dir)
+void moveCam(cam_t *Cam, char dir)
 {
     if (dir == 1)
     {
-        Cam->y -= 0.1;
+        Cam->AngXY -= M_PI / 18;
+        Cam->Coords.x = Cam->ProjRadius * cos(Cam->AngXY);
+        Cam->Coords.y = Cam->ProjRadius * sin(Cam->AngXY);
     }
     else if (dir == 2)
     {
-        Cam->y += 0.1;
+        Cam->AngXY += M_PI / 18;
+        Cam->Coords.x = Cam->ProjRadius * cos(Cam->AngXY);
+        Cam->Coords.y = Cam->ProjRadius * sin(Cam->AngXY);
     }
     else if (dir == 3)
     {
-        Cam->z -= 0.1;
+        Cam->AngZY -= M_PI / 18;
+        Cam->Coords.z = Cam->Radius * cos(Cam->AngZY);
+        Cam->ProjRadius = sqrt(pow(Cam->Radius, 2) - pow(Cam->Coords.z, 2));
+        Cam->Coords.x = Cam->ProjRadius * cos(Cam->AngXY);
+        Cam->Coords.y = Cam->ProjRadius * sin(Cam->AngXY);
     }
     else if (dir == 4)
     {
-        Cam->z += 0.1;
+        Cam->AngZY += M_PI / 18;
+        Cam->Coords.z = Cam->Radius * cos(Cam->AngZY);
+        Cam->ProjRadius = sqrt(pow(Cam->Radius, 2) - pow(Cam->Coords.z, 2));
+        Cam->Coords.x = Cam->ProjRadius * cos(Cam->AngXY);
+        Cam->Coords.y = Cam->ProjRadius * sin(Cam->AngXY);
     }
 }
 
@@ -146,22 +162,23 @@ void moveCam(threeD_t *Cam, char dir)
 /* Aplica o cálculo de perspectiva, gerando um vetor de vértices bidimensionais /
 ** a partir do vetor de vértices tridimensionais                               */
 
-void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, threeD_t Cam)
+void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, cam_t Cam)
 {
     threeD_t ProjCenter, CurrentVert;
     double d, lambda;
+    double Ang = (3 * M_PI / 2) - Cam.AngXY;
 
     /* Centro do plano em que a imagem é projetada */
-    ProjCenter.x = -2 * Cam.x;
-    ProjCenter.y = -2 * Cam.y;
-    ProjCenter.z = -2 * Cam.z;
+    ProjCenter.x = -2 * Cam.Coords.x;
+    ProjCenter.y = -2 * Cam.Coords.y;
+    ProjCenter.z = -2 * Cam.Coords.z;
 
     for (unsigned int i = 0; i < VertNum; i++)
     {
         /* Os pontos são redefinidos num sistema em que a câmera é a origem */
-        CurrentVert.x = RawVerts[i].x - Cam.x;
-        CurrentVert.y = RawVerts[i].y - Cam.y;
-        CurrentVert.z = RawVerts[i].z - Cam.z;
+        CurrentVert.x = RawVerts[i].x - Cam.Coords.x;
+        CurrentVert.y = RawVerts[i].y - Cam.Coords.y;
+        CurrentVert.z = RawVerts[i].z - Cam.Coords.z;
 
         /* Termo independente da equação geral do plano */
         d = pow(ProjCenter.x, 2) + pow(ProjCenter.y, 2) + pow(ProjCenter.z, 2);
@@ -172,6 +189,13 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, t
         CurrentVert.x *= lambda;
         CurrentVert.y *= lambda;
         CurrentVert.z *= lambda;
+
+        /* Rotaciona */
+        CurrentVert.x = CurrentVert.x * cos(Ang) - CurrentVert.y * sin(Ang);
+        CurrentVert.y = CurrentVert.x * sin(Ang) + CurrentVert.y * cos(Ang);
+
+        CurrentVert.y = CurrentVert.y * cos(Ang) - CurrentVert.z * sin(Cam.AngZY);
+        CurrentVert.z = CurrentVert.y * sin(Ang) + CurrentVert.z * cos(Cam.AngZY);
 
         ProjVerts[i].x = CurrentVert.x;
         ProjVerts[i].y = CurrentVert.y;
