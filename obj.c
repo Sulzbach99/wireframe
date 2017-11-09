@@ -157,11 +157,53 @@ void moveCam(cam_t *Cam, char dir)
     }
     else if (dir == 3)
     {
-        Cam->Coords.y += 3;
+        proj.x = 0;
+        proj.y = Cam->Coords.y;
+        proj.z = Cam->Coords.z;
+
+        norm = NORM(proj);
+
+        Cam->AngZY += M_PI / 18;
+
+        Cam->Coords.y = norm * cos(Cam->AngZY);
+        Cam->Coords.z = norm * sin(Cam->AngZY);
+
+        proj.x = Cam->Coords.x;
+        proj.y = Cam->Coords.y;
+        proj.z = 0;
+
+        norm = NORM(proj);
+
+        Cam->AngXY += M_PI / 18;
+
+        Cam->Coords.x = norm * sin(Cam->AngXY);
+
+        Cam->Radius = NORM(Cam->Coords);
     }
     else if (dir == 4)
     {
-        Cam->Coords.y -= 3;
+        proj.x = 0;
+        proj.y = Cam->Coords.y;
+        proj.z = Cam->Coords.z;
+
+        norm = NORM(proj);
+
+        Cam->AngZY -= M_PI / 18;
+
+        Cam->Coords.y = norm * cos(Cam->AngZY);
+        Cam->Coords.z = norm * sin(Cam->AngZY);
+
+        proj.x = Cam->Coords.x;
+        proj.y = Cam->Coords.y;
+        proj.z = 0;
+
+        norm = NORM(proj);
+
+        Cam->AngXY -= M_PI / 18;
+
+        Cam->Coords.x = norm * sin(Cam->AngXY);
+
+        Cam->Radius = NORM(Cam->Coords);
     }
 }
 
