@@ -69,6 +69,13 @@ typedef struct {
 
 /**********/
 
+#define NORM(u) sqrt(pow(u.x, 2) + pow(u.y, 2) + pow(u.z, 2))
+#define ORTX(u, v) u.y * v.z - v.y * u.z
+#define ORTY(u, v) u.z * v.x - v.z * u.x
+#define ORTZ(u, v) u.x * v.y - v.x * u.y
+#define ROTA(a, b, ang) a * cos(ang) - b * sin(ang)
+#define ROTB(a, b, ang) a * sin(ang) + b * cos(ang)
+
 #define MAXFLOATSIZE 30
 #define MAXINTSIZE 30
 

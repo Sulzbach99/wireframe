@@ -97,25 +97,20 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
 
 void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 {
-    double aux, h;
-    Cam->Radius = sqrt(pow(RawVerts[0].x, 2) + pow(RawVerts[0].y, 2) + pow(RawVerts[0].z, 2));
-    h = RawVerts[0].z;
+    double aux;
+    Cam->Radius = NORM(RawVerts[0]);
     for (unsigned int i = 1; i < VertNum; i++)
     {
-        aux = sqrt(pow(RawVerts[0].x, 2) + pow(RawVerts[0].y, 2) + pow(RawVerts[0].z, 2));
+        aux = NORM(RawVerts[i]);
         if (aux > Cam->Radius)
-        {
             Cam->Radius = aux;
-            h = RawVerts[i].z;
-        }
     }
 
     Cam->Radius *= 2;
-    double ProjRadius = sqrt(pow(Cam->Radius, 2) - pow(h, 2));
 
-    Cam->Coords.x = ProjRadius / 2;
-    Cam->Coords.y = 0;
-    Cam->Coords.z = ProjRadius;
+    Cam->Coords.x = Cam->Radius;
+    Cam->Coords.y = Cam->Radius / 4;
+    Cam->Coords.z = Cam->Radius;
 }
 
 /***********************/
