@@ -257,7 +257,6 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
                 Edge = Malloc(sizeof(edge_t));
                 Edge->Start = atoi(Prev) - 1;
                 Edge->End = atoi(Next) - 1;
-                printf("%d %d\n", Edge->Start, Edge->End);
 
                 createCell(EdgeInfo);
                 appendItem(EdgeInfo->Last, Edge);
@@ -270,7 +269,6 @@ edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
         Edge = Malloc(sizeof(edge_t));
         Edge->Start = atoi(Prev) - 1;
         Edge->End = atoi(First) - 1;
-        printf("%d %d\n", Edge->Start, Edge->End);
 
         createCell(EdgeInfo);
         appendItem(EdgeInfo->Last, Edge);
