@@ -67,7 +67,7 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
             i++;
 
         j = 0;
-        while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.' || ptr[i] == '-')
+        while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.' || ptr[i] == '-' || ptr[i] == 'e')
         {
             Z[j] = ptr[i];
             i++;
