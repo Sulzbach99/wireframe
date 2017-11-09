@@ -108,9 +108,13 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 
     Cam->Radius *= 2;
 
-    Cam->Coords.x = Cam->Radius;
-    Cam->Coords.y = Cam->Radius / 4;
+    Cam->Coords.x = 0;
+    Cam->Coords.y = 0;
     Cam->Coords.z = Cam->Radius;
+
+    Cam->AngXY = 0;
+    Cam->AngZY = 0;
+    Cam->AngXZ = M_PI / 2;
 }
 
 /***********************/
@@ -119,15 +123,37 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 
 void moveCam(cam_t *Cam, char dir)
 {
+    threeD_t proj;
+    double norm;
     if (dir == 1)
     {
-        Cam->Coords.x -= 3;
-        Cam->Coords.z -= 3;
+        proj.x = Cam->Coords.x;
+        proj.y = 0;
+        proj.z = Cam->Coords.z;
+
+        norm = NORM(proj);
+
+        Cam->AngXZ += M_PI / 18;
+
+        Cam->Coords.x = norm * cos(Cam->AngXZ);
+        Cam->Coords.z = norm * sin(Cam->AngXZ);
+
+        Cam->Radius = NORM(Cam->Coords);
     }
     else if (dir == 2)
     {
-        Cam->Coords.x += 3;
-        Cam->Coords.z += 3;
+        proj.x = Cam->Coords.x;
+        proj.y = 0;
+        proj.z = Cam->Coords.z;
+
+        norm = NORM(proj);
+
+        Cam->AngXZ -= M_PI / 18;
+
+        Cam->Coords.x = norm * cos(Cam->AngXZ);
+        Cam->Coords.z = norm * sin(Cam->AngXZ);
+
+        Cam->Radius = NORM(Cam->Coords);
     }
     else if (dir == 3)
     {
