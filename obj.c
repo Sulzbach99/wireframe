@@ -141,7 +141,6 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 
 void moveCam(cam_t *Cam, char dir)
 {
-    double norm;
     if (dir == 1) // LEFT
     {
         Cam->Coords.x = ROTA(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI / 18);
@@ -149,6 +148,13 @@ void moveCam(cam_t *Cam, char dir)
 
         Cam->ProjXZ.x = Cam->Coords.x;
         Cam->ProjXZ.z = Cam->Coords.z;
+
+        Cam->Xc.x = ROTA(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI);
+        Cam->Xc.z = ROTB(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI);
+
+        Cam->Yc.x = ORTX(Cam->Coords, Cam->Xc);
+        Cam->Yc.y = ORTY(Cam->Coords, Cam->Xc);
+        Cam->Yc.z = ORTZ(Cam->Coords, Cam->Xc);
     }
     else if (dir == 2) // RIGHT
     {
@@ -157,6 +163,13 @@ void moveCam(cam_t *Cam, char dir)
 
         Cam->ProjXZ.x = Cam->Coords.x;
         Cam->ProjXZ.z = Cam->Coords.z;
+
+        Cam->Xc.x = ROTA(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI);
+        Cam->Xc.z = ROTB(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI);
+
+        Cam->Yc.x = ORTX(Cam->Coords, Cam->Xc);
+        Cam->Yc.y = ORTY(Cam->Coords, Cam->Xc);
+        Cam->Yc.z = ORTZ(Cam->Coords, Cam->Xc);
     }
     else if (dir == 3) // UP
     {
@@ -171,6 +184,10 @@ void moveCam(cam_t *Cam, char dir)
 
         Cam->ProjYZ.y = Cam->Coords.y;
         Cam->ProjYZ.z = Cam->Coords.z;
+
+        Cam->Yc.x = ORTX(Cam->Coords, Cam->Xc);
+        Cam->Yc.y = ORTY(Cam->Coords, Cam->Xc);
+        Cam->Yc.z = ORTZ(Cam->Coords, Cam->Xc);
     }
     else if (dir == 4) // DOWN
     {
@@ -185,6 +202,10 @@ void moveCam(cam_t *Cam, char dir)
 
         Cam->ProjYZ.y = Cam->Coords.y;
         Cam->ProjYZ.z = Cam->Coords.z;
+
+        Cam->Yc.x = ORTX(Cam->Coords, Cam->Xc);
+        Cam->Yc.y = ORTY(Cam->Coords, Cam->Xc);
+        Cam->Yc.z = ORTZ(Cam->Coords, Cam->Xc);
     }
 }
 
