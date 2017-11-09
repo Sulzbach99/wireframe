@@ -40,6 +40,5 @@ void initList(list_t *List);
 void createCell(list_t *List);
 void removeCell(list_t *List);
 void appendItem(cell_t *Cell, void *Addr);
-char isInList(list_t *List, void *key, char (*comp)(const void *, const void *));
 
 #endif
