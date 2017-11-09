@@ -123,13 +123,8 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
     Cam->ProjXZ.y = 0;
     Cam->ProjXZ.z = Cam->Coords.z;
 
-    Cam->Xc.x = 1;
-    Cam->Xc.y = 0;
-    Cam->Xc.z = 0;
-
-    Cam->Yc.x = 0;
-    Cam->Yc.y = 1;
-    Cam->Yc.z = 0;
+    Cam->AngXZ = M_PI / 2;
+    Cam->AngY = M_PI / 2;
 }
 
 /***********************/
@@ -149,19 +144,7 @@ void moveCam(cam_t *Cam, char dir)
         Cam->ProjXZ.x = Cam->Coords.x;
         Cam->ProjXZ.z = Cam->Coords.z;
 
-        Cam->Xc.x = ROTA(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI);
-        Cam->Xc.z = ROTB(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI);
-
-        Cam->Yc.x = ORTX(Cam->Coords, Cam->Xc);
-        Cam->Yc.y = ORTY(Cam->Coords, Cam->Xc);
-        Cam->Yc.z = ORTZ(Cam->Coords, Cam->Xc);
-
-        if (Cam->Yc.z < 0)
-        {
-            Cam->Yc.x *= -1;
-            Cam->Yc.y *= -1;
-            Cam->Yc.z *= -1;
-        }
+        Cam->AngXZ += M_PI / 18;
     }
     else if (dir == 2) // RIGHT
     {
@@ -171,19 +154,7 @@ void moveCam(cam_t *Cam, char dir)
         Cam->ProjXZ.x = Cam->Coords.x;
         Cam->ProjXZ.z = Cam->Coords.z;
 
-        Cam->Xc.x = ROTA(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI);
-        Cam->Xc.z = ROTB(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI);
-
-        Cam->Yc.x = ORTX(Cam->Coords, Cam->Xc);
-        Cam->Yc.y = ORTY(Cam->Coords, Cam->Xc);
-        Cam->Yc.z = ORTZ(Cam->Coords, Cam->Xc);
-
-        if (Cam->Yc.z < 0)
-        {
-            Cam->Yc.x *= -1;
-            Cam->Yc.y *= -1;
-            Cam->Yc.z *= -1;
-        }
+        Cam->AngXZ -= M_PI / 18;
     }
     else if (dir == 3) // UP
     {
@@ -199,16 +170,7 @@ void moveCam(cam_t *Cam, char dir)
         Cam->ProjYZ.y = Cam->Coords.y;
         Cam->ProjYZ.z = Cam->Coords.z;
 
-        Cam->Yc.x = ORTX(Cam->Coords, Cam->Xc);
-        Cam->Yc.y = ORTY(Cam->Coords, Cam->Xc);
-        Cam->Yc.z = ORTZ(Cam->Coords, Cam->Xc);
-
-        if (Cam->Yc.z < 0)
-        {
-            Cam->Yc.x *= -1;
-            Cam->Yc.y *= -1;
-            Cam->Yc.z *= -1;
-        }
+        Cam->AngY -= M_PI / 18;
     }
     else if (dir == 4) // DOWN
     {
@@ -224,16 +186,7 @@ void moveCam(cam_t *Cam, char dir)
         Cam->ProjYZ.y = Cam->Coords.y;
         Cam->ProjYZ.z = Cam->Coords.z;
 
-        Cam->Yc.x = ORTX(Cam->Coords, Cam->Xc);
-        Cam->Yc.y = ORTY(Cam->Coords, Cam->Xc);
-        Cam->Yc.z = ORTZ(Cam->Coords, Cam->Xc);
-
-        if (Cam->Yc.z < 0)
-        {
-            Cam->Yc.x *= -1;
-            Cam->Yc.y *= -1;
-            Cam->Yc.z *= -1;
-        }
+        Cam->AngY += M_PI / 18;
     }
 }
 
@@ -244,24 +197,14 @@ void moveCam(cam_t *Cam, char dir)
 
 void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, cam_t Cam)
 {
-    double d, lambda, Ang1, Ang2;
-    threeD_t CurrentVert, ProjCenter, ProjYc;
+    double d, lambda;
+    threeD_t CurrentVert, ProjCenter;
 
     ProjCenter.x = -2 * Cam.Coords.x;
     ProjCenter.y = -2 * Cam.Coords.y;
     ProjCenter.z = -2 * Cam.Coords.z;
 
     d = NORM(ProjCenter);
-
-    Ang1 = - (acos(Cam.ProjXZ.x / NORM(Cam.ProjXZ)) + M_PI / 2);
-
-    ProjYc.x = Cam.Yc.x;
-    ProjYc.z = Cam.Yc.z;
-
-    Cam.Yc.x = ROTA(Cam.Yc.x, ProjYc.z, Ang1);
-    Cam.Yc.z = ROTB(Cam.Yc.x, ProjYc.z, Ang1);
-
-    Ang2 = - acos(Cam.Yc.y / NORM(Cam.Yc));
 
     for (unsigned int i = 0; i < VertNum; i++)
     {
@@ -275,25 +218,14 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
         CurrentVert.y *= lambda;
         CurrentVert.z *= lambda;
 
-        CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, Ang1);
-        CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, Ang1);
+        CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, Cam.AngXZ + M_PI / 2);
+        CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, Cam.AngXZ + M_PI / 2);
 
-        CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, Ang2);
-        CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, Ang2);
-/*
-        if (CurrentVert.z == 0)
-        {
-*/
-            ProjVerts[i].x = CurrentVert.x;
-            ProjVerts[i].y = CurrentVert.y;
-/*
-        }
-        else
-        {
-            fprintf(stderr, "Calculation error\n");
-            exit(EXIT_FAILURE);
-        }
-*/
+        CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, Cam.AngY + M_PI / 2);
+        CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, Cam.AngY + M_PI / 2);
+
+        ProjVerts[i].x = CurrentVert.x;
+        ProjVerts[i].y = CurrentVert.y;
     }
 }
 
@@ -340,7 +272,7 @@ void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W,
     for (unsigned int j = 0; j < VertNum; j++)
     {
         ProjVerts[j].x = ((ProjVerts[j].x - Xcen) * Scale * 0.95) + W / 2;
-        ProjVerts[j].y = -((ProjVerts[j].y - Ycen) * Scale * 0.95) + H / 2;
+        ProjVerts[j].y = ((ProjVerts[j].y - Ycen) * Scale * 0.95) + H / 2;
     }
 }
 

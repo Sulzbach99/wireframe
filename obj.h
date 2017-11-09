@@ -62,7 +62,8 @@ typedef struct {
 
 typedef struct {
 
-    threeD_t Coords, ProjXY, ProjYZ, ProjXZ, Xc, Yc;
+    threeD_t Coords, ProjXY, ProjYZ, ProjXZ;
+    double AngXZ, AngY;
 
 } cam_t;
 
