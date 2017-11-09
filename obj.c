@@ -122,6 +122,14 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
     Cam->ProjXZ.x = Cam->Coords.x;
     Cam->ProjXZ.y = 0;
     Cam->ProjXZ.z = Cam->Coords.z;
+
+    Cam->Xc.x = 1;
+    Cam->Xc.y = 0;
+    Cam->Xc.z = 0;
+
+    Cam->Yc.x = 0;
+    Cam->Yc.y = 1;
+    Cam->Yc.z = 0;
 }
 
 /***********************/
