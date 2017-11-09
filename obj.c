@@ -97,24 +97,31 @@ threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
 
 void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 {
-    double aux;
-    Cam->Radius = NORM(RawVerts[0]);
+    double aux, Radius = NORM(RawVerts[0]);
     for (unsigned int i = 1; i < VertNum; i++)
     {
         aux = NORM(RawVerts[i]);
-        if (aux > Cam->Radius)
-            Cam->Radius = aux;
+        if (aux > Radius)
+            Radius = aux;
     }
 
-    Cam->Radius *= 2;
+    Radius *= 2;
 
     Cam->Coords.x = 0;
     Cam->Coords.y = 0;
-    Cam->Coords.z = Cam->Radius;
+    Cam->Coords.z = Radius;
 
-    Cam->AngXY = 0;
-    Cam->AngZY = 0;
-    Cam->AngXZ = M_PI / 2;
+    Cam->ProjXY.x = Cam->Coords.x;
+    Cam->ProjXY.y = Cam->Coords.y;
+    Cam->ProjXY.z = 0;
+
+    Cam->ProjYZ.x = 0;
+    Cam->ProjYZ.y = Cam->Coords.y;
+    Cam->ProjYZ.z = Cam->Coords.z;
+
+    Cam->ProjXZ.x = Cam->Coords.x;
+    Cam->ProjXZ.y = 0;
+    Cam->ProjXZ.z = Cam->Coords.z;
 }
 
 /***********************/
@@ -123,87 +130,50 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 
 void moveCam(cam_t *Cam, char dir)
 {
-    threeD_t proj;
     double norm;
-    if (dir == 1)
+    if (dir == 1) // LEFT
     {
-        proj.x = Cam->Coords.x;
-        proj.y = 0;
-        proj.z = Cam->Coords.z;
+        Cam->Coords.x = ROTA(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI / 18);
+        Cam->Coords.z = ROTB(Cam->ProjXZ.x, Cam->ProjXZ.z, M_PI / 18);
 
-        norm = NORM(proj);
-
-        Cam->AngXZ += M_PI / 18;
-
-        Cam->Coords.x = norm * cos(Cam->AngXZ);
-        Cam->Coords.z = norm * sin(Cam->AngXZ);
-
-        Cam->Radius = NORM(Cam->Coords);
+        Cam->ProjXZ.x = Cam->Coords.x;
+        Cam->ProjXZ.z = Cam->Coords.z;
     }
-    else if (dir == 2)
+    else if (dir == 2) // RIGHT
     {
-        proj.x = Cam->Coords.x;
-        proj.y = 0;
-        proj.z = Cam->Coords.z;
+        Cam->Coords.x = ROTA(Cam->ProjXZ.x, Cam->ProjXZ.z, - M_PI / 18);
+        Cam->Coords.z = ROTB(Cam->ProjXZ.x, Cam->ProjXZ.z, - M_PI / 18);
 
-        norm = NORM(proj);
-
-        Cam->AngXZ -= M_PI / 18;
-
-        Cam->Coords.x = norm * cos(Cam->AngXZ);
-        Cam->Coords.z = norm * sin(Cam->AngXZ);
-
-        Cam->Radius = NORM(Cam->Coords);
+        Cam->ProjXZ.x = Cam->Coords.x;
+        Cam->ProjXZ.z = Cam->Coords.z;
     }
-    else if (dir == 3)
+    else if (dir == 3) // UP
     {
-        proj.x = 0;
-        proj.y = Cam->Coords.y;
-        proj.z = Cam->Coords.z;
+        Cam->Coords.x = ROTA(Cam->ProjXY.x, Cam->ProjXY.y, M_PI / 18);
+        Cam->Coords.y = ROTB(Cam->ProjXY.x, Cam->ProjXY.y, M_PI / 18);
 
-        norm = NORM(proj);
+        Cam->ProjXY.x = Cam->Coords.x;
+        Cam->ProjXY.y = Cam->Coords.y;
 
-        Cam->AngZY += M_PI / 18;
+        Cam->Coords.y = ROTA(Cam->ProjYZ.y, Cam->ProjYZ.z, M_PI / 18);
+        Cam->Coords.z = ROTB(Cam->ProjYZ.y, Cam->ProjYZ.z, M_PI / 18);
 
-        Cam->Coords.y = norm * cos(Cam->AngZY);
-        Cam->Coords.z = norm * sin(Cam->AngZY);
-
-        proj.x = Cam->Coords.x;
-        proj.y = Cam->Coords.y;
-        proj.z = 0;
-
-        norm = NORM(proj);
-
-        Cam->AngXY += M_PI / 18;
-
-        Cam->Coords.x = norm * sin(Cam->AngXY);
-
-        Cam->Radius = NORM(Cam->Coords);
+        Cam->ProjYZ.y = Cam->Coords.y;
+        Cam->ProjYZ.z = Cam->Coords.z;
     }
-    else if (dir == 4)
+    else if (dir == 4) // DOWN
     {
-        proj.x = 0;
-        proj.y = Cam->Coords.y;
-        proj.z = Cam->Coords.z;
+        Cam->Coords.x = ROTA(Cam->ProjXY.x, Cam->ProjXY.y, - M_PI / 18);
+        Cam->Coords.y = ROTB(Cam->ProjXY.x, Cam->ProjXY.y, - M_PI / 18);
 
-        norm = NORM(proj);
+        Cam->ProjXY.x = Cam->Coords.x;
+        Cam->ProjXY.y = Cam->Coords.y;
 
-        Cam->AngZY -= M_PI / 18;
+        Cam->Coords.y = ROTA(Cam->ProjYZ.y, Cam->ProjYZ.z, - M_PI / 18);
+        Cam->Coords.z = ROTB(Cam->ProjYZ.y, Cam->ProjYZ.z, - M_PI / 18);
 
-        Cam->Coords.y = norm * cos(Cam->AngZY);
-        Cam->Coords.z = norm * sin(Cam->AngZY);
-
-        proj.x = Cam->Coords.x;
-        proj.y = Cam->Coords.y;
-        proj.z = 0;
-
-        norm = NORM(proj);
-
-        Cam->AngXY -= M_PI / 18;
-
-        Cam->Coords.x = norm * sin(Cam->AngXY);
-
-        Cam->Radius = NORM(Cam->Coords);
+        Cam->ProjYZ.y = Cam->Coords.y;
+        Cam->ProjYZ.z = Cam->Coords.z;
     }
 }
 
