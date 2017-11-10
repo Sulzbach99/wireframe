@@ -43,15 +43,10 @@ typedef struct {
 
 typedef struct {
 
-    unsigned int VertNum;
-    queue_t *VertInfo;
-    threeD_t *RawVerts;
-    twoD_t *ProjVerts;
-
-    queue_t *FaceInfo;
-
-    unsigned int EdgeNum;
-    queue_t *EdgeInfo;
+    unsigned int VertNum, EdgeNum;
+    queue_t *VertInfo, *FaceInfo, *EdgeInfo;
+    threeD_t *RawVerts, RawCenter;
+    twoD_t *ProjVerts, ProjCenter;
     edge_t *Edges;
 
 } obj_t;
