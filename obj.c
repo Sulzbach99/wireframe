@@ -156,17 +156,21 @@ void moveCam(cam_t *Cam, char dir)
         Proj.y = Cam->Coords.y;
         Proj.z = Cam->Coords.z;
 
-        if (Cam->Coords.x != 0 || Cam->Coords.y != 0)
+        if (Cam->Coords.x == 0)
+        {
+            Cam->Coords.y = ROTA(Proj.y, Proj.z, -Ang);
+            Cam->Coords.z = ROTB(Proj.y, Proj.z, -Ang);
+        }
+        else if (Cam->Coords.z == 0)
+        {
+            Cam->Coords.x = ROTA(Proj.x, Proj.y, -Ang);
+            Cam->Coords.y = ROTB(Proj.x, Proj.y, -Ang);
+        }
+        else
         {
             Cam->Coords.x = ROTA(Proj.x, Proj.y, -Ang);
             Cam->Coords.y = ROTB(Proj.x, Proj.y, -Ang);
             Cam->Coords.z = ROTB(Proj.y, Proj.z, -Ang);
-        }
-        else
-        {
-            Cam->Coords.y = ROTA(Proj.y, Proj.z, -Ang);
-            Cam->Coords.z = ROTB(Proj.y, Proj.z, -Ang);
-            Cam->Coords.x = ROTA(Proj.x, Proj.y, -Ang);
         }
 
         Cam->AngY -= Ang;
@@ -177,17 +181,21 @@ void moveCam(cam_t *Cam, char dir)
         Proj.y = Cam->Coords.y;
         Proj.z = Cam->Coords.z;
 
-        if (Cam->Coords.x != 0 || Cam->Coords.y != 0)
+        if (Cam->Coords.x == 0)
+        {
+            Cam->Coords.y = ROTA(Proj.y, Proj.z, Ang);
+            Cam->Coords.z = ROTB(Proj.y, Proj.z, Ang);
+        }
+        else if (Cam->Coords.z == 0)
+        {
+            Cam->Coords.x = ROTA(Proj.x, Proj.y, Ang);
+            Cam->Coords.y = ROTB(Proj.x, Proj.y, Ang);
+        }
+        else
         {
             Cam->Coords.x = ROTA(Proj.x, Proj.y, Ang);
             Cam->Coords.y = ROTB(Proj.x, Proj.y, Ang);
             Cam->Coords.z = ROTB(Proj.y, Proj.z, Ang);
-        }
-        else
-        {
-            Cam->Coords.y = ROTA(Proj.y, Proj.z, Ang);
-            Cam->Coords.z = ROTB(Proj.y, Proj.z, Ang);
-            Cam->Coords.x = ROTA(Proj.x, Proj.y, Ang);
         }
 
         Cam->AngY += Ang;
@@ -222,21 +230,18 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
         CurrentVert.y = CurrentVert.y * lambda - ProjCenter.y;
         CurrentVert.z = CurrentVert.z * lambda - ProjCenter.z;
 
-        if (CurrentVert.x != 0 || CurrentVert.z != 0)
+        if (CurrentVert.x == 0 && CurrentVert.z == 0)
         {
-            CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngXZ + M_PI / 2);
-            CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngXZ + M_PI / 2);
-
             CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
             CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
         }
         else
         {
-            CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
-            CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
-
             CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngXZ + M_PI / 2);
             CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngXZ + M_PI / 2);
+
+            CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
+            CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
         }
 
         ProjVerts[i].x = CurrentVert.x;
