@@ -5,22 +5,21 @@
 
 void parseArgs(int argc, char *argv[], char *path)
 {
-    if (argc > 3)
-    {
-        fprintf(stderr, "Error: Too many arguments\n");
-        exit(EXIT_FAILURE);
-    }
-
-    if (argv[1][0] != '<')
+    if (argc > 1)
         strcpy(path, argv[1]);
     else
-        path = "stdin";
+        strcpy(path, "");
 }
 
 void readFile(char *path, queue_t *Verts, queue_t *Faces)
 {
     FILE *OBJS;
-    OBJS = fopen(path, "r");
+
+    if (path[0])
+        OBJS = fopen(path, "r");
+    else
+        OBJS = stdin;
+
     if (!OBJS)
     {
         fprintf(stderr, "Error: Could not load file\n");
