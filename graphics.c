@@ -20,7 +20,7 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam)
     signed char status = -1; 
     while (status == -1) 
     { 
-        if (SDL_PollEvent(&e)) 
+        if (SDL_WaitEvent(&e)) 
         { 
             if (e.type == SDL_QUIT) 
                 status = 0;
