@@ -1,7 +1,7 @@
 #ifndef __OBJ__
 #define __OBJ__
 
-#include "list.h"
+#include "queue.h"
 #include <string.h>
 #include <math.h>
 
@@ -44,14 +44,14 @@ typedef struct {
 typedef struct {
 
     unsigned int VertNum;
-    list_t *VertInfo;
+    queue_t *VertInfo;
     threeD_t *RawVerts;
     twoD_t *ProjVerts;
 
-    list_t *FaceInfo;
+    queue_t *FaceInfo;
 
     unsigned int EdgeNum;
-    list_t *EdgeInfo;
+    queue_t *EdgeInfo;
     edge_t *Edges;
 
 } obj_t;
@@ -77,11 +77,11 @@ typedef struct {
 #define MAXINTSIZE 30
 
 void initObj(obj_t *Obj);
-threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum);
+threeD_t *getRawVerts(queue_t *VertInfo, unsigned int *VertNum);
 void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum);
 void moveCam(cam_t *Cam, char dir);
 void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, cam_t Cam);
 void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H);
-edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo);
+edge_t *getEdges(queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo);
 
 #endif

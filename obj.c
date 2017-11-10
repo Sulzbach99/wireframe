@@ -4,13 +4,13 @@
 
 void initObj(obj_t *Obj)
 {
-    Obj->VertInfo = Malloc(sizeof(list_t));
-    Obj->FaceInfo = Malloc(sizeof(list_t));
-    Obj->EdgeInfo = Malloc(sizeof(list_t));
+    Obj->VertInfo = Malloc(sizeof(queue_t));
+    Obj->FaceInfo = Malloc(sizeof(queue_t));
+    Obj->EdgeInfo = Malloc(sizeof(queue_t));
 
-    initList(Obj->VertInfo);
-    initList(Obj->FaceInfo);
-    initList(Obj->EdgeInfo);
+    initQueue(Obj->VertInfo);
+    initQueue(Obj->FaceInfo);
+    initQueue(Obj->EdgeInfo);
 
     Obj->RawVerts = NULL;
     Obj->ProjVerts = NULL;
@@ -22,11 +22,11 @@ void initObj(obj_t *Obj)
 
 /***********************/
 
-/* Faz uso de todas as informações listadas em VertInfo para alocar e   /
+/* Faz uso de todas as informações queueadas em VertInfo para alocar e   /
 ** preencher um vetor de vértices tridimensionais. VertInfo é esvaziada /
 ** no processo                                                         */
 
-threeD_t *getRawVerts(list_t *VertInfo, unsigned int *VertNum)
+threeD_t *getRawVerts(queue_t *VertInfo, unsigned int *VertNum)
 {
     *VertNum = VertInfo->Length;
     threeD_t *RawVerts = Malloc(sizeof(threeD_t) * (*VertNum));
@@ -278,10 +278,10 @@ void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W,
 
 /************************************************************************************/
 
-/* Preenche a lista EdgeInfo à partir de FaceInfo, que é esvaziada no processo, /
+/* Preenche a queuea EdgeInfo à partir de FaceInfo, que é esvaziada no processo, /
 ** posteriormente, EdgeInfo é esvaziada, gerando o vetor Edges                 */
 
-edge_t *getEdges(list_t *EdgeInfo, unsigned int *EdgeNum, list_t *FaceInfo)
+edge_t *getEdges(queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo)
 {
     char *ptr, First[MAXINTSIZE], Prev[MAXINTSIZE], Next[MAXINTSIZE];
     unsigned int i, j;

@@ -17,7 +17,7 @@ void parseArgs(int argc, char *argv[], char *path)
         path = "stdin";
 }
 
-void readFile(char *path, list_t *Verts, list_t *Faces)
+void readFile(char *path, queue_t *Verts, queue_t *Faces)
 {
     FILE *OBJS;
     OBJS = fopen(path, "r");
