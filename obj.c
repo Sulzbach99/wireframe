@@ -118,9 +118,6 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 /***********************/
 
 /* Recalcula o ângulo da câmera */
-/* TODO:
-** Implementar condicionais para projeções nulas
-** Implementar e recalcular Xc e Yc */
 
 void moveCam(cam_t *Cam, char dir)
 {
