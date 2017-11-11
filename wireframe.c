@@ -62,7 +62,10 @@ int main(int argc, char *argv[])
 
     cam_t Camera;
     initCam(&Camera, Object.RawVerts, Object.VertNum);
+
+#ifdef __DEBUG__
     printf("Cam: %.32f %.32f %.32f\n", Camera.Coords.x, Camera.Coords.y, Camera.Coords.z);
+#endif
 
     getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
 
@@ -76,7 +79,11 @@ int main(int argc, char *argv[])
     while (dir.x || dir.y)
     {
         moveCam(&Camera, dir);
+
+#ifdef __DEBUG__
         printf("Cam: %.32f %.32f %.32f\n", Camera.Coords.x, Camera.Coords.y, Camera.Coords.z);
+#endif
+
         getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
         convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT);
         plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords, &dir);

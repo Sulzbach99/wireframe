@@ -194,7 +194,9 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
         ProjVerts[i].y = CurrentVert.y;
     }
 
-    printf("Cam.AngX: %f Cam.Angy: %f d: %f\n", Cam.AngX, Cam.AngY, d);
+#ifdef __DEBUG__
+    printf("AngX: %f Angy: %f\n", Cam.AngX, Cam.AngY);
+#endif
 }
 
 /*******************************************************************************/

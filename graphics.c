@@ -27,7 +27,9 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 dir->x = 0;
                 dir->y = 0; 
                 status = 0;
+#ifdef __DEBUG__
                 printf("Quit\n");
+#endif
             }
 
             if (e.type == SDL_KEYDOWN)
@@ -37,33 +39,47 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                     dir->x = -1;
                     dir->y = 0;
                     status = 0;
+#ifdef __DEBUG__
                     printf("Key Left\n");
+#endif
                 }
                 else if (e.key.keysym.sym == SDLK_RIGHT)
                 {
                     dir->x = 1;
                     dir->y = 0;
                     status = 0;
+#ifdef __DEBUG__
                     printf("Key Right\n");
+#endif
                 }
                 else if (e.key.keysym.sym == SDLK_UP)
                 {
                     dir->x = 0;
                     dir->y = 1;
                     status = 0;
+#ifdef __DEBUG__
                     printf("Key Up\n");
+#endif
                 }
                 else if (e.key.keysym.sym == SDLK_DOWN)
                 {
                     dir->x = 0;
                     dir->y = -1;
                     status = 0;
+#ifdef __DEBUG__
                     printf("Key Down\n");
+#endif
                 }
             }
 
             if (e.type == SDL_MOUSEBUTTONDOWN)
+            {
                 EnMouse = 1;
+
+#ifdef __DEBUG__
+                printf("Mouse Button\n");
+#endif
+            }
 
             if (e.type == SDL_MOUSEMOTION && EnMouse && !EnMotion)
             {

@@ -2,6 +2,7 @@
 #define __OBJ__
 
 #include "queue.h"
+#include "debug.h"
 #include <string.h>
 #include <math.h>
 
