@@ -199,21 +199,21 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
 
         if (CurrentVert.x == 0 && CurrentVert.z == 0)
         {
-            CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
-            CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
+            CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY + M_PI / 2);
+            CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY + M_PI / 2);
         }
         else if (CurrentVert.y == 0 && CurrentVert.z == 0)
         {
-            CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngX + M_PI / 2);
-            CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngX + M_PI / 2);
+            CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngX - M_PI / 2);
+            CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngX - M_PI / 2);
         }
         else
         {
-            CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngX + M_PI / 2);
-            CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngX + M_PI / 2);
+            CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngX - M_PI / 2);
+            CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngX - M_PI / 2);
 
-            CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
-            CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
+            CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY + M_PI / 2);
+            CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY + M_PI / 2);
         }
 
         ProjVerts[i].x = CurrentVert.x;
@@ -264,7 +264,7 @@ void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W,
     for (unsigned int j = 0; j < VertNum; j++)
     {
         ProjVerts[j].x = ((ProjVerts[j].x - Xcen) * Scale * 0.95) + W / 2;
-        ProjVerts[j].y = ((ProjVerts[j].y - Ycen) * Scale * 0.95) + H / 2;
+        ProjVerts[j].y = -((ProjVerts[j].y - Ycen) * Scale * 0.95) + H / 2;
     }
 }
 
