@@ -31,8 +31,7 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 printf("Quit\n");
 #endif
             }
-
-            if (e.type == SDL_KEYDOWN)
+            else if (e.type == SDL_KEYDOWN)
             {
                 if (e.key.keysym.sym == SDLK_LEFT)
                 {
@@ -71,8 +70,7 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
 #endif
                 }
             }
-
-            if (e.type == SDL_MOUSEBUTTONDOWN)
+            else if (e.type == SDL_MOUSEBUTTONDOWN)
             {
                 EnMouse = 1;
 
@@ -82,8 +80,7 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 Start.x = e.motion.x;
                 Start.y = e.motion.y;
             }
-
-            if (e.type == SDL_MOUSEMOTION && EnMouse)
+            else if (e.type == SDL_MOUSEMOTION && EnMouse)
             {
                 if (e.motion.x - Start.x > 0)
                     dir->x = -1;
@@ -106,8 +103,7 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                     status = 0;
                 }
             }
-
-            if (e.type == SDL_MOUSEBUTTONUP)
+            else if (e.type == SDL_MOUSEBUTTONUP)
             {
                 EnMouse = 0;
             }
