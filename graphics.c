@@ -16,7 +16,8 @@ void initGraphics()
 void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir)
 { 
     SDL_Event e;
-    signed char status = 1; 
+    char status = 1, EnMouse = 0, EnMotion = 0;
+    twoD_t Start; 
     while (status) 
     { 
         if (SDL_WaitEvent(&e)) 
@@ -59,6 +60,36 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                     status = 0;
                     printf("Key Down\n");
                 }
+            }
+
+            if (e.type == SDL_MOUSEBUTTONDOWN)
+                EnMouse = 1;
+
+            if (e.type == SDL_MOUSEMOTION && EnMouse && !EnMotion)
+            {
+                Start.x = e.motion.x;
+                Start.y = e.motion.y;
+                EnMotion = 1;
+            }
+
+            if (e.type == SDL_MOUSEMOTION && EnMotion)
+            {
+                if (e.motion.x - Start.x > 0)
+                    dir->x = -1;
+                else if (e.motion.x - Start.x < 0)
+                    dir->x = 1;
+                else
+                    dir->x = 0;
+
+                if (e.motion.y - Start.y > 0)
+                    dir->y = -1;
+                else if (e.motion.y - Start.y < 0)
+                    dir->y = 1;
+                else
+                    dir->y = 0;
+
+                if (dir->x || dir->y)
+                    status = 0;
             }
         }
 
