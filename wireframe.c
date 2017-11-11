@@ -69,15 +69,16 @@ int main(int argc, char *argv[])
 
     Object.Edges = getEdges(Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo);
 
+    twoD_t dir;
     initGraphics();
-    char status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords);
-    while (status)
+    plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords, &dir);
+    while (dir.x || dir.y)
     {
-        moveCam(&Camera, status);
+        moveCam(&Camera, dir);
         printf("Cam: %f %f %f\n", Camera.Coords.x, Camera.Coords.y, Camera.Coords.z);
         getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
         convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT);
-        status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords);
+        plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords, &dir);
     }
     killGraphics();
 

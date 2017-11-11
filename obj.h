@@ -74,7 +74,7 @@ typedef struct {
 void initObj(obj_t *Obj);
 threeD_t *getRawVerts(queue_t *VertInfo, unsigned int *VertNum);
 void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum);
-void moveCam(cam_t *Cam, char dir);
+void moveCam(cam_t *Cam, twoD_t dir);
 void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, cam_t Cam);
 void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H);
 edge_t *getEdges(queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo);

@@ -12,7 +12,7 @@ SDL_Window *window;
 SDL_Renderer *renderer;
 
 void initGraphics();
-char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam);
+void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir);
 void killGraphics();
 
 #endif

@@ -13,28 +13,47 @@ void initGraphics()
 
 /* Plota o objeto, desenhando as arestas */
 
-char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam)
+void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir)
 { 
-    SDL_Event e; 
-    
-    signed char status = -1; 
-    while (status == -1) 
+    SDL_Event e;
+    signed char status = 1; 
+    while (status) 
     { 
         if (SDL_WaitEvent(&e)) 
         { 
-            if (e.type == SDL_QUIT) 
+            if (e.type == SDL_QUIT)
+            {
+                dir->x = 0;
+                dir->y = 0; 
                 status = 0;
+            }
 
             if (e.type == SDL_KEYDOWN)
             {
                 if (e.key.keysym.sym == SDLK_LEFT)
-                    status = 1;
+                {
+                    dir->x = -1;
+                    dir->y = 0;
+                    status = 0;
+                }
                 else if (e.key.keysym.sym == SDLK_RIGHT)
-                    status = 2;
+                {
+                    dir->x = 1;
+                    dir->y = 0;
+                    status = 0;
+                }
                 else if (e.key.keysym.sym == SDLK_UP)
-                    status = 3;
+                {
+                    dir->x = 0;
+                    dir->y = 1;
+                    status = 0;
+                }
                 else if (e.key.keysym.sym == SDLK_DOWN)
-                    status = 4;
+                {
+                    dir->x = 0;
+                    dir->y = -1;
+                    status = 0;
+                }
             }
         }
 
@@ -46,8 +65,6 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam)
 
         SDL_RenderPresent(renderer);
     } 
-
-    return status;
 }
 
 /*****************************************/

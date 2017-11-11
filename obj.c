@@ -119,87 +119,44 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 
 /* Recalcula o ângulo da câmera */
 
-void moveCam(cam_t *Cam, char dir)
+void moveCam(cam_t *Cam, twoD_t dir)
 {
     threeD_t Proj;
     double Ang = M_PI / 18;
 
-    if (dir == 1) // LEFT
+    Proj.x = Cam->Coords.x;
+    Proj.z = Cam->Coords.z;
+
+    if (Cam->Coords.x != 0 || Cam->Coords.z != 0)
     {
-        Proj.x = Cam->Coords.x;
-        Proj.z = Cam->Coords.z;
-
-        if (Cam->Coords.x != 0 || Cam->Coords.z != 0)
-        {
-            Cam->Coords.x = ROTA(Proj.x, Proj.z, Ang);
-            Cam->Coords.z = ROTB(Proj.x, Proj.z, Ang);
-        }
-
-        Cam->AngXZ += Ang;
+        Cam->Coords.x = ROTA(Proj.x, Proj.z, -(Ang * dir.x));
+        Cam->Coords.z = ROTB(Proj.x, Proj.z, -(Ang * dir.x));
     }
-    else if (dir == 2) // RIGHT
+
+    Cam->AngXZ -= Ang * dir.x;
+
+    Proj.x = Cam->Coords.x;
+    Proj.y = Cam->Coords.y;
+    Proj.z = Cam->Coords.z;
+
+    if (Cam->Coords.x == 0)
     {
-        Proj.x = Cam->Coords.x;
-        Proj.z = Cam->Coords.z;
-
-        if (Cam->Coords.x != 0 || Cam->Coords.z != 0)
-        {
-            Cam->Coords.x = ROTA(Proj.x, Proj.z, -Ang);
-            Cam->Coords.z = ROTB(Proj.x, Proj.z, -Ang);
-        }
-
-        Cam->AngXZ -= Ang;
+        Cam->Coords.y = ROTA(Proj.y, Proj.z, Ang * dir.y);
+        Cam->Coords.z = ROTB(Proj.y, Proj.z, Ang * dir.y);
     }
-    else if (dir == 3) // UP
+    else if (Cam->Coords.z == 0)
     {
-        Proj.x = Cam->Coords.x;
-        Proj.y = Cam->Coords.y;
-        Proj.z = Cam->Coords.z;
-
-        if (Cam->Coords.x == 0)
-        {
-            Cam->Coords.y = ROTA(Proj.y, Proj.z, -Ang);
-            Cam->Coords.z = ROTB(Proj.y, Proj.z, -Ang);
-        }
-        else if (Cam->Coords.z == 0)
-        {
-            Cam->Coords.x = ROTA(Proj.x, Proj.y, -Ang);
-            Cam->Coords.y = ROTB(Proj.x, Proj.y, -Ang);
-        }
-        else
-        {
-            Cam->Coords.x = ROTA(Proj.x, Proj.y, -Ang);
-            Cam->Coords.y = ROTB(Proj.x, Proj.y, -Ang);
-            Cam->Coords.z = ROTB(Proj.y, Proj.z, -Ang);
-        }
-
-        Cam->AngY -= Ang;
+        Cam->Coords.x = ROTA(Proj.x, Proj.y, Ang * dir.y);
+        Cam->Coords.y = ROTB(Proj.x, Proj.y, Ang * dir.y);
     }
-    else if (dir == 4) // DOWN
+    else
     {
-        Proj.x = Cam->Coords.x;
-        Proj.y = Cam->Coords.y;
-        Proj.z = Cam->Coords.z;
-
-        if (Cam->Coords.x == 0)
-        {
-            Cam->Coords.y = ROTA(Proj.y, Proj.z, Ang);
-            Cam->Coords.z = ROTB(Proj.y, Proj.z, Ang);
-        }
-        else if (Cam->Coords.z == 0)
-        {
-            Cam->Coords.x = ROTA(Proj.x, Proj.y, Ang);
-            Cam->Coords.y = ROTB(Proj.x, Proj.y, Ang);
-        }
-        else
-        {
-            Cam->Coords.x = ROTA(Proj.x, Proj.y, Ang);
-            Cam->Coords.y = ROTB(Proj.x, Proj.y, Ang);
-            Cam->Coords.z = ROTB(Proj.y, Proj.z, Ang);
-        }
-
-        Cam->AngY += Ang;
+        Cam->Coords.x = ROTA(Proj.x, Proj.y, Ang * dir.y);
+        Cam->Coords.y = ROTB(Proj.x, Proj.y, Ang * dir.y);
+        Cam->Coords.z = ROTB(Proj.y, Proj.z, Ang * dir.y);
     }
+
+    Cam->AngY += Ang * dir.y;
 }
 
 /********************************/
