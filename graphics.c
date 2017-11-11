@@ -7,6 +7,7 @@ void initGraphics()
     SDL_Init(SDL_INIT_VIDEO);
     window = SDL_CreateWindow("Wireframe", 100, 100, WIDTH, HEIGHT, SDL_WINDOW_OPENGL); 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); 
+    EnMouse = 0;
 }
 
 /*********************/
@@ -16,11 +17,10 @@ void initGraphics()
 void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir)
 { 
     SDL_Event e;
-    char status = 1, EnMouse = 0, EnMotion = 0;
-    twoD_t Start; 
+    char status = 1;
     while (status) 
     { 
-        if (SDL_WaitEvent(&e)) 
+        if (SDL_PollEvent(&e)) 
         { 
             if (e.type == SDL_QUIT)
             {
@@ -77,18 +77,13 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 EnMouse = 1;
 
 #ifdef __DEBUG__
-                printf("Mouse Button\n");
+                printf("Mouse\n");
 #endif
-            }
-
-            if (e.type == SDL_MOUSEMOTION && EnMouse && !EnMotion)
-            {
                 Start.x = e.motion.x;
                 Start.y = e.motion.y;
-                EnMotion = 1;
             }
 
-            if (e.type == SDL_MOUSEMOTION && EnMotion)
+            if (e.type == SDL_MOUSEMOTION && EnMouse)
             {
                 if (e.motion.x - Start.x > 0)
                     dir->x = -1;
@@ -98,14 +93,23 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                     dir->x = 0;
 
                 if (e.motion.y - Start.y > 0)
-                    dir->y = -1;
-                else if (e.motion.y - Start.y < 0)
                     dir->y = 1;
+                else if (e.motion.y - Start.y < 0)
+                    dir->y = -1;
                 else
                     dir->y = 0;
 
                 if (dir->x || dir->y)
+                {
+                    Start.x = e.motion.x;
+                    Start.y = e.motion.y;
                     status = 0;
+                }
+            }
+
+            if (e.type == SDL_MOUSEBUTTONUP)
+            {
+                EnMouse = 0;
             }
         }
 

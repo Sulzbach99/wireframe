@@ -11,6 +11,9 @@
 SDL_Window *window;
 SDL_Renderer *renderer;
 
+char EnMouse;
+twoD_t Start; 
+
 void initGraphics();
 void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir);
 void killGraphics();

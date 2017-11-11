@@ -122,7 +122,7 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 void moveCam(cam_t *Cam, twoD_t dir)
 {
     threeD_t Proj;
-    double Ang = M_PI / 18;
+    double Ang = M_PI / 90;
 
     Proj.x = Cam->Coords.x;
     Proj.z = Cam->Coords.z;
