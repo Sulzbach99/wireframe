@@ -45,8 +45,8 @@ typedef struct {
 
     unsigned int VertNum, EdgeNum;
     queue_t *VertInfo, *FaceInfo, *EdgeInfo;
-    threeD_t *RawVerts, RawCenter;
-    twoD_t *ProjVerts, ProjCenter;
+    threeD_t *RawVerts;
+    twoD_t *ProjVerts;
     edge_t *Edges;
 
 } obj_t;

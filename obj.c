@@ -151,9 +151,19 @@ void moveCam(cam_t *Cam, twoD_t dir)
     }
     else
     {
+        Cam->Coords.x = ROTA(Proj.x, Proj.z, -Cam->AngX);
+        Cam->Coords.z = ROTB(Proj.x, Proj.z, -Cam->AngX);
+
+        Proj.x = Cam->Coords.x;
+        Proj.z = Cam->Coords.z;
+
         Cam->Coords.x = ROTA(Proj.x, Proj.y, Ang * dir.y);
         Cam->Coords.y = ROTB(Proj.x, Proj.y, Ang * dir.y);
-        Cam->Coords.z = ROTB(Proj.y, Proj.z, Ang * dir.y);
+
+        Proj.x = Cam->Coords.x;
+
+        Cam->Coords.x = ROTA(Proj.x, Proj.z, Cam->AngX);
+        Cam->Coords.z = ROTB(Proj.x, Proj.z, Cam->AngX);
     }
 
     Cam->AngY += Ang * dir.y;
@@ -191,6 +201,11 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
         {
             CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
             CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
+        }
+        else if (CurrentVert.y == 0 && CurrentVert.z == 0)
+        {
+            CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngX + M_PI / 2);
+            CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngX + M_PI / 2);
         }
         else
         {
