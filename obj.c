@@ -127,7 +127,7 @@ void moveCam(cam_t *Cam, twoD_t dir)
     Proj.x = Cam->Coords.x;
     Proj.z = Cam->Coords.z;
 
-    if (abs(Cam->Coords.x) > 1 && abs(Cam->Coords.z) > 1)
+    if (abs(Cam->Coords.x) > 1 || abs(Cam->Coords.z) > 1)
     {
         Cam->Coords.x = ROTA(Proj.x, Proj.z, -(Ang * dir.x));
         Cam->Coords.z = ROTB(Proj.x, Proj.z, -(Ang * dir.x));
