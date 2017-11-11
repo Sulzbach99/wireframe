@@ -22,7 +22,7 @@ void readFile(char *path, queue_t *Verts, queue_t *Faces)
 
     if (!OBJS)
     {
-        fprintf(stderr, "Error: Could not load file\n");
+        fprintf(stderr, "Reading Error: Could not load file\n");
         exit(EXIT_FAILURE);
     }
 

@@ -39,7 +39,7 @@ void removeCell(queue_t *Queue)
 {
     if (!FIRSTCELL(Queue))
     {
-        fprintf(stderr, "Error: Tried to remove cell from empty queue\n");
+        fprintf(stderr, "Queue Error: Tried to remove cell from empty queue\n");
         exit(EXIT_FAILURE);
     }
 

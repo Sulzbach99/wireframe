@@ -8,7 +8,7 @@ void *Malloc(int size)
     ptr = malloc(size);
     if (!ptr)
     {
-        fprintf(stderr, "Malloc error\n");
+        fprintf(stderr, "Malloc Error: Memory could not be allocated\n");
         exit(EXIT_FAILURE);
     }
     return ptr;

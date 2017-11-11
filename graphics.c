@@ -4,9 +4,26 @@
 
 void initGraphics()
 {
-    SDL_Init(SDL_INIT_VIDEO);
-    window = SDL_CreateWindow("Wireframe", 100, 100, WIDTH, HEIGHT, SDL_WINDOW_OPENGL); 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); 
+    if (!SDL_Init(SDL_INIT_VIDEO));
+    {
+        fprintf("Graphics Error: Could not initialize video\n");
+        exit(EXIT_FAILURE);
+    }
+
+    window = SDL_CreateWindow("Wireframe", 100, 100, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
+    if (!window)
+    {
+        fprintf("Graphics Error: Could not create window\n");
+        exit(EXIT_FAILURE);
+    }
+
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (!renderer)
+    {
+        fprintf("Graphics Error: Could not create renderer\n");
+        exit(EXIT_FAILURE);
+    }
+
     EnMouse = 0;
 }
 
