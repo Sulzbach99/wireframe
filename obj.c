@@ -22,77 +22,6 @@ void initObj(obj_t *Obj)
 
 /***********************/
 
-/* Faz uso de todas as informações queueadas em VertInfo para alocar e   /
-** preencher um vetor de vértices tridimensionais. VertInfo é esvaziada /
-** no processo                                                         */
-
-threeD_t *getRawVerts(queue_t *VertInfo, unsigned int *VertNum)
-{
-    *VertNum = VertInfo->Length;
-    threeD_t *RawVerts = Malloc(sizeof(threeD_t) * (*VertNum));
-
-    char *ptr, X[MAXFLOATSIZE], Y[MAXFLOATSIZE], Z[MAXFLOATSIZE];
-    unsigned short i, j, k = 0;
-    cell_t *Cell = VertInfo->First;
-    while (Cell)
-    {
-        ptr = (char *) Cell->Item;
-
-        i = 1;
-        while (!(ptr[i] >= '0' && ptr[i] <= '9') && ptr[i] != '-')
-            i++;
-
-        j = 0;
-        while (ptr[i] != ' ')
-        {
-            X[j] = ptr[i];
-            i++;
-            j++;
-        }
-        X[j] = '\0';
-
-        while (!(ptr[i] >= '0' && ptr[i] <= '9') && ptr[i] != '-')
-            i++;
-
-        j = 0;
-        while (ptr[i] != ' ')
-        {
-            Y[j] = ptr[i];
-            i++;
-            j++;
-        }
-        Y[j] = '\0';
-
-        while (!(ptr[i] >= '0' && ptr[i] <= '9') && ptr[i] != '-')
-            i++;
-
-        j = 0;
-        while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.' || ptr[i] == '-' || ptr[i] == 'e')
-        {
-            Z[j] = ptr[i];
-            i++;
-            j++;
-        }
-        Z[j] = '\0';
-
-        free(ptr);
-
-        RawVerts[k].x = atof(X);
-        RawVerts[k].y = atof(Y);
-        RawVerts[k].z = atof(Z);
-
-        k++;
-
-        removeCell(VertInfo);
-        Cell = VertInfo->First;
-    }
-    free(VertInfo);
-
-    return RawVerts;
-}
-
-/***********************************************************************/
-
 /* Inicializa a câmera */
 
 void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
@@ -158,6 +87,83 @@ void moveCam(cam_t *Cam, twoD_t dir)
 
 /********************************/
 
+/* Aloca espaço para o arranjo ProjVerts */
+
+void allocProjVerts(twoD_t **ProjVerts, unsigned int VertNum)
+{
+    *ProjVerts = Malloc(sizeof(twoD_t) * VertNum);
+}
+
+/*****************************************/
+
+/* Faz uso de todas as informações queueadas em VertInfo para alocar e   /
+** preencher um vetor de vértices tridimensionais. VertInfo é esvaziada /
+** no processo                                                         */
+
+void getRawVerts(threeD_t **RawVerts, queue_t *VertInfo, unsigned int *VertNum)
+{
+    char *ptr, X[MAXFLOATSIZE], Y[MAXFLOATSIZE], Z[MAXFLOATSIZE];
+    unsigned int i, j, k = 0;
+    *VertNum = VertInfo->Length;
+    *RawVerts = Malloc(sizeof(threeD_t) * (*VertNum));
+    cell_t *Cell = VertInfo->First;
+    while (Cell)
+    {
+        ptr = (char *) Cell->Item;
+
+        i = 1;
+        while (!(ptr[i] >= '0' && ptr[i] <= '9') && ptr[i] != '-')
+            i++;
+
+        j = 0;
+        while (ptr[i] != ' ')
+        {
+            X[j] = ptr[i];
+            i++;
+            j++;
+        }
+        X[j] = '\0';
+
+        while (!(ptr[i] >= '0' && ptr[i] <= '9') && ptr[i] != '-')
+            i++;
+
+        j = 0;
+        while (ptr[i] != ' ')
+        {
+            Y[j] = ptr[i];
+            i++;
+            j++;
+        }
+        Y[j] = '\0';
+
+        while (!(ptr[i] >= '0' && ptr[i] <= '9') && ptr[i] != '-')
+            i++;
+
+        j = 0;
+        while ((ptr[i] >= '0' && ptr[i] <= '9') || ptr[i] == '.' || ptr[i] == '-' || ptr[i] == 'e')
+        {
+            Z[j] = ptr[i];
+            i++;
+            j++;
+        }
+        Z[j] = '\0';
+
+        free(ptr);
+
+        (*RawVerts)[k].x = atof(X);
+        (*RawVerts)[k].y = atof(Y);
+        (*RawVerts)[k].z = atof(Z);
+
+        k++;
+
+        removeCell(VertInfo);
+        Cell = VertInfo->First;
+    }
+    free(VertInfo);
+}
+
+/***********************************************************************/
+
 /* Aplica o cálculo de perspectiva, gerando um vetor de vértices bidimensionais /
 ** a partir do vetor de vértices tridimensionais                               */
 
@@ -202,54 +208,7 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
 
 /*******************************************************************************/
 
-/* Converte as coordenadas cartesianas abstratas do vetor de vértices bidimensionais /
-** para coordenadas de tela                                                         */
-
-void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H)
-{
-    double Xmax, Xmin, Ymax, Ymin;
-    Xmax = Xmin = ProjVerts[0].x;
-    Ymax = Ymin = ProjVerts[0].y;
-    for (unsigned int i = 1; i < VertNum; i++)
-    {
-        if (ProjVerts[i].x > Xmax)
-            Xmax = ProjVerts[i].x;
-
-        if (ProjVerts[i].x < Xmin)
-            Xmin = ProjVerts[i].x;
-
-        if (ProjVerts[i].y > Ymax)
-            Ymax = ProjVerts[i].y;
-
-        if (ProjVerts[i].y < Ymin)
-            Ymin = ProjVerts[i].y;
-    }
-
-    double Xcen = (Xmax + Xmin) / 2;
-    double Xdif = Xmax - Xmin;
-
-    double Ycen = (Ymax + Ymin) / 2;
-    double Ydif = Ymax - Ymin;
-
-    double Scx = W / Xdif;
-    double Scy = H / Ydif;
-
-    double Scale;
-    if (Scx < Scy)
-        Scale = Scx;
-    else
-        Scale = Scy;
-
-    for (unsigned int j = 0; j < VertNum; j++)
-    {
-        ProjVerts[j].x = ((ProjVerts[j].x - Xcen) * Scale * 0.95) + W / 2;
-        ProjVerts[j].y = ((ProjVerts[j].y - Ycen) * Scale * 0.95) + H / 2;
-    }
-}
-
-/************************************************************************************/
-
-/* Preenche a queuea EdgeInfo à partir de FaceInfo, que é esvaziada no processo, /
+/* Preenche a queue EdgeInfo à partir de FaceInfo, que é esvaziada no processo, /
 ** posteriormente, EdgeInfo é esvaziada, gerando o vetor Edges                 */
 
 static int compareEdges(const void *a, const void *b)
@@ -272,7 +231,7 @@ static int compareEdges(const void *a, const void *b)
     return 0;
 }
 
-edge_t *getEdges(queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo)
+void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo)
 {
     char *ptr, First[MAXINTSIZE], Prev[MAXINTSIZE], Next[MAXINTSIZE];
     unsigned int i, j, Aux;
@@ -354,16 +313,17 @@ edge_t *getEdges(queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo)
     }
     free(FaceInfo);
 
-    i = 0;
     *EdgeNum = EdgeInfo->Length;
-    edge_t *Edges = Malloc(sizeof(edge_t) * (*EdgeNum));
+    *Edges = Malloc(sizeof(edge_t) * (*EdgeNum));
+
+    i = 0;
     Cell = EdgeInfo->First;
     while (Cell)
     {
         Edge = (edge_t *) Cell->Item;
 
-        Edges[i].Start = Edge->Start;
-        Edges[i].End = Edge->End;
+        (*Edges)[i].Start = Edge->Start;
+        (*Edges)[i].End = Edge->End;
 
         free(Edge);
 
@@ -374,34 +334,35 @@ edge_t *getEdges(queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo)
     }
     EdgeInfo->Last = NULL;
 
-    qsort(Edges, *EdgeNum, sizeof(edge_t), compareEdges);
+    qsort(*Edges, *EdgeNum, sizeof(edge_t), compareEdges);
 
     Edge = Malloc(sizeof(edge_t));
-    Edge->Start = Edges[0].Start;
-    Edge->End = Edges[0].End;
+    Edge->Start = (*Edges)[0].Start;
+    Edge->End = (*Edges)[0].End;
     createCell(EdgeInfo);
     appendItem(EdgeInfo->First, Edge);
     for (i = 1; i < *EdgeNum; i++)
-        if (compareEdges(&Edges[i-1], &Edges[i]))
+        if (compareEdges(&(*Edges)[i-1], &(*Edges)[i]))
         {
             Edge = Malloc(sizeof(edge_t));
-            Edge->Start = Edges[i].Start;
-            Edge->End = Edges[i].End;
+            Edge->Start = (*Edges)[i].Start;
+            Edge->End = (*Edges)[i].End;
             createCell(EdgeInfo);
             appendItem(EdgeInfo->Last, Edge);
         }
-    free(Edges);
+    free(*Edges);
+
+    *EdgeNum = EdgeInfo->Length;
+    *Edges = Malloc(sizeof(edge_t) * (*EdgeNum));
 
     i = 0;
-    *EdgeNum = EdgeInfo->Length;
-    Edges = Malloc(sizeof(edge_t) * (*EdgeNum));
     Cell = EdgeInfo->First;
     while (Cell)
     {
         Edge = (edge_t *) Cell->Item;
 
-        Edges[i].Start = Edge->Start;
-        Edges[i].End = Edge->End;
+        (*Edges)[i].Start = Edge->Start;
+        (*Edges)[i].End = Edge->End;
 
         free(Edge);
 
@@ -411,8 +372,53 @@ edge_t *getEdges(queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo)
         Cell = EdgeInfo->First;
     }
     free(EdgeInfo);
-
-    return Edges;
 }
 
 /*******************************************************************************/
+
+/* Converte as coordenadas cartesianas abstratas do vetor de vértices bidimensionais /
+** para coordenadas de tela                                                         */
+
+void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H)
+{
+    double Xmax, Xmin, Ymax, Ymin;
+    Xmax = Xmin = ProjVerts[0].x;
+    Ymax = Ymin = ProjVerts[0].y;
+    for (unsigned int i = 1; i < VertNum; i++)
+    {
+        if (ProjVerts[i].x > Xmax)
+            Xmax = ProjVerts[i].x;
+
+        if (ProjVerts[i].x < Xmin)
+            Xmin = ProjVerts[i].x;
+
+        if (ProjVerts[i].y > Ymax)
+            Ymax = ProjVerts[i].y;
+
+        if (ProjVerts[i].y < Ymin)
+            Ymin = ProjVerts[i].y;
+    }
+
+    double Xcen = (Xmax + Xmin) / 2;
+    double Xdif = Xmax - Xmin;
+
+    double Ycen = (Ymax + Ymin) / 2;
+    double Ydif = Ymax - Ymin;
+
+    double Scx = W / Xdif;
+    double Scy = H / Ydif;
+
+    double Scale;
+    if (Scx < Scy)
+        Scale = Scx;
+    else
+        Scale = Scy;
+
+    for (unsigned int j = 0; j < VertNum; j++)
+    {
+        ProjVerts[j].x = ((ProjVerts[j].x - Xcen) * Scale * 0.95) + W / 2;
+        ProjVerts[j].y = ((ProjVerts[j].y - Ycen) * Scale * 0.95) + H / 2;
+    }
+}
+
+/************************************************************************************/

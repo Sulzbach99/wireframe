@@ -55,10 +55,7 @@ int main(int argc, char *argv[])
     initObj(&Object);
     readFile(path, Object.VertInfo, Object.FaceInfo);
 
-    Object.RawVerts = getRawVerts(Object.VertInfo, &Object.VertNum);
-
-    // Isso deveria ir em outro lugar...
-    Object.ProjVerts = Malloc(sizeof(twoD_t) * Object.VertNum);
+    getRawVerts(&Object.RawVerts, Object.VertInfo, &Object.VertNum);
 
     cam_t Camera;
     initCam(&Camera, Object.RawVerts, Object.VertNum);
@@ -67,11 +64,11 @@ int main(int argc, char *argv[])
     printf("Cam: %.32f %.32f %.32f\n", Camera.Coords.x, Camera.Coords.y, Camera.Coords.z);
 #endif
 
+    allocProjVerts(&Object.ProjVerts, Object.VertNum);
     getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
-
     convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT);
 
-    Object.Edges = getEdges(Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo);
+    getEdges(&Object.Edges, Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo);
 
     twoD_t dir;
     initGraphics();
