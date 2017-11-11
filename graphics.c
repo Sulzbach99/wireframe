@@ -26,6 +26,7 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 dir->x = 0;
                 dir->y = 0; 
                 status = 0;
+                printf("Quit\n");
             }
 
             if (e.type == SDL_KEYDOWN)
@@ -35,24 +36,28 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                     dir->x = -1;
                     dir->y = 0;
                     status = 0;
+                    printf("Key Left\n");
                 }
                 else if (e.key.keysym.sym == SDLK_RIGHT)
                 {
                     dir->x = 1;
                     dir->y = 0;
                     status = 0;
+                    printf("Key Right\n");
                 }
                 else if (e.key.keysym.sym == SDLK_UP)
                 {
                     dir->x = 0;
                     dir->y = 1;
                     status = 0;
+                    printf("Key Up\n");
                 }
                 else if (e.key.keysym.sym == SDLK_DOWN)
                 {
                     dir->x = 0;
                     dir->y = -1;
                     status = 0;
+                    printf("Key Down\n");
                 }
             }
         }
