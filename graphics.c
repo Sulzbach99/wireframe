@@ -86,9 +86,8 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
             else if (e.type == SDL_MOUSEBUTTONDOWN)
             {
                 EnMouse = 1;
-
 #ifdef __DEBUG__
-                printf("Mouse\n");
+                printf("Mouse Press\n");
 #endif
                 Start.x = e.motion.x;
                 Start.y = e.motion.y;
@@ -122,6 +121,9 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
             }
             else if (e.type == SDL_MOUSEWHEEL)
             {
+#ifdef __DEBUG__
+                printf("Mouse Scroll\n");
+#endif
                 if (e.wheel.y == 1)
                 {
                     *zoom += 0.1;
