@@ -79,6 +79,6 @@ void allocProjVerts(twoD_t **ProjVerts, unsigned int VertNum);
 void getRawVerts(threeD_t **RawVerts, queue_t *VertInfo, unsigned int *VertNum);
 void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, cam_t Cam);
 void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo);
-void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H);
+void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H, double zoom);
 
 #endif

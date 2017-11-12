@@ -27,11 +27,11 @@ void initGraphics()
 
 /* Plota o objeto, desenhando as arestas */
 
-void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir)
+char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir, double *zoom)
 { 
     SDL_Event e;
-    char status = 1;
-    while (status) 
+    signed char status = -1;
+    while (status == -1) 
     { 
         if (SDL_PollEvent(&e)) 
         { 
@@ -50,7 +50,7 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 {
                     dir->x = -1;
                     dir->y = 0;
-                    status = 0;
+                    status = 1;
 #ifdef __DEBUG__
                     printf("Key Left\n");
 #endif
@@ -59,7 +59,7 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 {
                     dir->x = 1;
                     dir->y = 0;
-                    status = 0;
+                    status = 1;
 #ifdef __DEBUG__
                     printf("Key Right\n");
 #endif
@@ -68,7 +68,7 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 {
                     dir->x = 0;
                     dir->y = 1;
-                    status = 0;
+                    status = 1;
 #ifdef __DEBUG__
                     printf("Key Up\n");
 #endif
@@ -77,7 +77,7 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 {
                     dir->x = 0;
                     dir->y = -1;
-                    status = 0;
+                    status = 1;
 #ifdef __DEBUG__
                     printf("Key Down\n");
 #endif
@@ -113,12 +113,25 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 {
                     Start.x = e.motion.x;
                     Start.y = e.motion.y;
-                    status = 0;
+                    status = 1;
                 }
             }
             else if (e.type == SDL_MOUSEBUTTONUP)
             {
                 EnMouse = 0;
+            }
+            else if (e.type == SDL_MOUSEWHEEL)
+            {
+                if (e.wheel.y == 1)
+                {
+                    *zoom += 0.1;
+                    status = 1;
+                }
+                else if (e.wheel.y == -1)
+                {
+                    *zoom -= 0.1;
+                    status = 1;
+                }
             }
         }
 
@@ -130,6 +143,8 @@ void plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
 
         SDL_RenderPresent(renderer);
     } 
+
+    return status;
 }
 
 /*****************************************/

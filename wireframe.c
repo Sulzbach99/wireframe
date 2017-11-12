@@ -66,14 +66,16 @@ int main(int argc, char *argv[])
 
     allocProjVerts(&Object.ProjVerts, Object.VertNum);
     getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
-    convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT);
+    double zoom = 0.95;
+    convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT, zoom);
 
     getEdges(&Object.Edges, Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo);
 
     twoD_t dir;
+    char status;
     initGraphics();
-    plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords, &dir);
-    while (dir.x || dir.y)
+    status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords, &dir, &zoom);
+    while (status)
     {
         moveCam(&Camera, dir);
 
@@ -82,8 +84,8 @@ int main(int argc, char *argv[])
 #endif
 
         getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
-        convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT);
-        plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords, &dir);
+        convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT, zoom);
+        status = plotObj(Object.ProjVerts, Object.Edges, Object.EdgeNum, &Camera.Coords, &dir, &zoom);
     }
     killGraphics();
 

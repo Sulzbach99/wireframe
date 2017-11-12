@@ -379,7 +379,7 @@ void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t 
 /* Converte as coordenadas cartesianas abstratas do vetor de vértices bidimensionais /
 ** para coordenadas de tela                                                         */
 
-void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H)
+void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H, double zoom)
 {
     double Xmax, Xmin, Ymax, Ymin;
     Xmax = Xmin = ProjVerts[0].x;
@@ -416,8 +416,8 @@ void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W,
 
     for (unsigned int j = 0; j < VertNum; j++)
     {
-        ProjVerts[j].x = ((ProjVerts[j].x - Xcen) * Scale * 0.95) + W / 2;
-        ProjVerts[j].y = ((ProjVerts[j].y - Ycen) * Scale * 0.95) + H / 2;
+        ProjVerts[j].x = ((ProjVerts[j].x - Xcen) * Scale * zoom) + W / 2;
+        ProjVerts[j].y = ((ProjVerts[j].y - Ycen) * Scale * zoom) + H / 2;
     }
 }
 
