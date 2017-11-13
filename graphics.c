@@ -127,11 +127,15 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 if (e.wheel.y == 1)
                 {
                     *zoom += 0.01;
+                    dir->x = 0;
+                    dir->y = 0;
                     status = 1;
                 }
                 else if (e.wheel.y == -1)
                 {
                     *zoom -= 0.01;
+                    dir->x = 0;
+                    dir->y = 0;
                     status = 1;
                 }
             }
