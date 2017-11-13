@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     initCam(&Camera, Object.RawVerts, Object.VertNum);
 
 #ifdef __DEBUG__
-    printf("Cam: %.32f %.32f %.32f\n", Camera.Coords.x, Camera.Coords.y, Camera.Coords.z);
+    printf("Cam: X:%.32f Y:%.32f Z:%.32f\n", Camera.Coords.x, Camera.Coords.y, Camera.Coords.z);
 #endif
 
     allocProjVerts(&Object.ProjVerts, Object.VertNum);
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
         moveCam(&Camera, dir);
 
 #ifdef __DEBUG__
-        printf("Cam: %.32f %.32f %.32f\n", Camera.Coords.x, Camera.Coords.y, Camera.Coords.z);
+        printf("Cam: X:%.32f Y:%.32f Z:%.32f\n", Camera.Coords.x, Camera.Coords.y, Camera.Coords.z);
 #endif
 
         getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);

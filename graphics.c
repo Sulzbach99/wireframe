@@ -41,7 +41,7 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                 dir->y = 0; 
                 status = 0;
 #ifdef __DEBUG__
-                printf("Quit\n");
+                printf("Event: Quit\n");
 #endif
             }
             else if (e.type == SDL_KEYDOWN)
@@ -52,7 +52,7 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                     dir->y = 0;
                     status = 1;
 #ifdef __DEBUG__
-                    printf("Key Left\n");
+                    printf("Event: Key Left\n");
 #endif
                 }
                 else if (e.key.keysym.sym == SDLK_RIGHT)
@@ -61,7 +61,7 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                     dir->y = 0;
                     status = 1;
 #ifdef __DEBUG__
-                    printf("Key Right\n");
+                    printf("Event: Key Right\n");
 #endif
                 }
                 else if (e.key.keysym.sym == SDLK_UP)
@@ -70,7 +70,7 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                     dir->y = 1;
                     status = 1;
 #ifdef __DEBUG__
-                    printf("Key Up\n");
+                    printf("Event: Key Up\n");
 #endif
                 }
                 else if (e.key.keysym.sym == SDLK_DOWN)
@@ -79,7 +79,7 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
                     dir->y = -1;
                     status = 1;
 #ifdef __DEBUG__
-                    printf("Key Down\n");
+                    printf("Event: Key Down\n");
 #endif
                 }
             }
@@ -87,7 +87,7 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
             {
                 EnMouse = 1;
 #ifdef __DEBUG__
-                printf("Mouse Press\n");
+                printf("Event: Mouse Press\n");
 #endif
                 Start.x = e.motion.x;
                 Start.y = e.motion.y;
@@ -122,7 +122,7 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
             else if (e.type == SDL_MOUSEWHEEL)
             {
 #ifdef __DEBUG__
-                printf("Mouse Scroll\n");
+                printf("Event: Mouse Scroll\n");
 #endif
                 if (e.wheel.y == 1)
                 {
