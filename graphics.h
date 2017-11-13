@@ -15,7 +15,7 @@ char EnMouse;
 twoD_t Start; 
 
 void initGraphics();
-char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir, double *zoom);
+char plotObj(edge2_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir, double *zoom);
 void killGraphics();
 
 #endif

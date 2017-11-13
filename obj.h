@@ -38,6 +38,13 @@ typedef struct {
 
 } edge_t;
 
+typedef struct {
+
+    twoD_t *Start;
+    twoD_t *End;
+
+} edge2_t;
+
 /**********/
 
 /* Objeto */
@@ -48,7 +55,7 @@ typedef struct {
     queue_t *VertInfo, *FaceInfo, *EdgeInfo;
     threeD_t *RawVerts;
     twoD_t *ProjVerts;
-    edge_t *Edges;
+    edge2_t *Edges;
 
 } obj_t;
 
@@ -78,7 +85,7 @@ void moveCam(cam_t *Cam, twoD_t dir);
 void allocProjVerts(twoD_t **ProjVerts, unsigned int VertNum);
 void getRawVerts(threeD_t **RawVerts, queue_t *VertInfo, unsigned int *VertNum);
 void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, cam_t Cam);
-void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo);
+void getEdges(edge2_t **EdgePtr, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo, twoD_t *ProjVerts);
 void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H, double zoom);
 
 #endif

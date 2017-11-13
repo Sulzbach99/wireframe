@@ -27,7 +27,7 @@ void initGraphics()
 
 /* Plota o objeto, desenhando as arestas */
 
-char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir, double *zoom)
+char plotObj(edge2_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir, double *zoom)
 { 
     SDL_Event e;
     signed char status = -1;
@@ -94,6 +94,9 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
             }
             else if (e.type == SDL_MOUSEMOTION && EnMouse)
             {
+#ifdef __DEBUG__
+                printf("Event: Mouse Motion\n");
+#endif
                 if (e.motion.x - Start.x > 0)
                     dir->x = -1;
                 else if (e.motion.x - Start.x < 0)
@@ -145,7 +148,7 @@ char plotObj(twoD_t *Verts, edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, 
         SDL_RenderClear(renderer);
 
         for (unsigned int i = 0; i < EdgeNum; i++)
-            lineRGBA(renderer, Verts[Edges[i].Start].x, Verts[Edges[i].Start].y, Verts[Edges[i].End].x, Verts[Edges[i].End].y, 255, 255, 255, 100);
+            lineRGBA(renderer, Edges[i].Start->x, Edges[i].Start->y, Edges[i].End->x, Edges[i].End->y, 255, 255, 255, 100);
 
         SDL_RenderPresent(renderer);
     } 
