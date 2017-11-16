@@ -169,9 +169,9 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
     double d, lambda;
     threeD_t CurrentVert, ProjCenter;
 
-    ProjCenter.x = -2 * Cam.Coords.x;
-    ProjCenter.y = -2 * Cam.Coords.y;
-    ProjCenter.z = -2 * Cam.Coords.z;
+    ProjCenter.x = -Cam.Coords.x;
+    ProjCenter.y = -Cam.Coords.y;
+    ProjCenter.z = -Cam.Coords.z;
 
     d = NORM(ProjCenter);
 
@@ -195,10 +195,14 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
 
         ProjVerts[i].x = CurrentVert.x;
         ProjVerts[i].y = CurrentVert.y;
+
+#ifdef __DEBUG__
+        printf("CurrentVert.y: %f\n", CurrentVert.y);
+#endif
     }
 
 #ifdef __DEBUG__
-    printf("AngX: %f Angy: %f\n", Cam.AngX, Cam.AngY);
+    printf("AngX: %f AngY: %f\n", Cam.AngX, Cam.AngY);
     printf("\n");
 #endif
 }
