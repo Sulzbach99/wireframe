@@ -183,9 +183,9 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
 
         lambda = d / (ProjCenter.x * CurrentVert.x + ProjCenter.y * CurrentVert.y + ProjCenter.z * CurrentVert.z );
 
-        CurrentVert.x = CurrentVert.x * lambda - ProjCenter.x;
-        CurrentVert.y = CurrentVert.y * lambda - ProjCenter.y;
-        CurrentVert.z = CurrentVert.z * lambda - ProjCenter.z;
+        CurrentVert.x *= lambda;
+        CurrentVert.y *= lambda;
+        CurrentVert.z *= lambda;
 
         CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngX - M_PI / 2);
         CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngX - M_PI / 2);
