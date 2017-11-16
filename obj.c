@@ -228,10 +228,11 @@ static int compareEdges(const void *a, const void *b)
     return 0;
 }
 
-void getEdges(edge2_t **Edges2, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo, twoD_t *ProjVerts)
+void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo, twoD_t *ProjVerts)
 {
     char *ptr, First[MAXINTSIZE], Prev[MAXINTSIZE], Next[MAXINTSIZE];
-    unsigned int i, j, Aux;
+    unsigned int i, j;
+    twoD_t *Aux;
     edge_t *Edge;
     cell_t *Cell = FaceInfo->First;
     while (Cell)
@@ -273,8 +274,8 @@ void getEdges(edge2_t **Edges2, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_
                 Next[j] = '\0';
 
                 Edge = Malloc(sizeof(edge_t));
-                Edge->Start = atoi(Prev) - 1;
-                Edge->End = atoi(Next) - 1;
+                Edge->Start = &ProjVerts[atoi(Prev) - 1];
+                Edge->End = &ProjVerts[atoi(Next) - 1];
 
                 if (Edge->Start > Edge->End)
                 {
@@ -292,8 +293,8 @@ void getEdges(edge2_t **Edges2, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_
         free(ptr);
 
         Edge = Malloc(sizeof(edge_t));
-        Edge->Start = atoi(Prev) - 1;
-        Edge->End = atoi(First) - 1;
+        Edge->Start = &ProjVerts[atoi(Prev) - 1];
+        Edge->End = &ProjVerts[atoi(First) - 1];
 
         if (Edge->Start > Edge->End)
         {
@@ -311,7 +312,7 @@ void getEdges(edge2_t **Edges2, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_
     free(FaceInfo);
 
     *EdgeNum = EdgeInfo->Length;
-    edge_t *Edges = Malloc(sizeof(edge_t) * (*EdgeNum));
+    *Edges = Malloc(sizeof(edge_t) * (*EdgeNum));
 
     i = 0;
     Cell = EdgeInfo->First;
@@ -319,8 +320,8 @@ void getEdges(edge2_t **Edges2, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_
     {
         Edge = (edge_t *) Cell->Item;
 
-        Edges[i].Start = Edge->Start;
-        Edges[i].End = Edge->End;
+        (*Edges)[i].Start = Edge->Start;
+        (*Edges)[i].End = Edge->End;
 
         free(Edge);
 
@@ -331,26 +332,26 @@ void getEdges(edge2_t **Edges2, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_
     }
     EdgeInfo->Last = NULL;
 
-    qsort(Edges, *EdgeNum, sizeof(edge_t), compareEdges);
+    qsort(*Edges, *EdgeNum, sizeof(edge_t), compareEdges);
 
     Edge = Malloc(sizeof(edge_t));
-    Edge->Start = Edges[0].Start;
-    Edge->End = Edges[0].End;
+    Edge->Start = (*Edges)[0].Start;
+    Edge->End = (*Edges)[0].End;
     createCell(EdgeInfo);
     appendItem(EdgeInfo->First, Edge);
     for (i = 1; i < *EdgeNum; i++)
-        if (compareEdges(&Edges[i-1], &Edges[i]))
+        if (compareEdges(&(*Edges)[i-1], &(*Edges)[i]))
         {
             Edge = Malloc(sizeof(edge_t));
-            Edge->Start = Edges[i].Start;
-            Edge->End = Edges[i].End;
+            Edge->Start = (*Edges)[i].Start;
+            Edge->End = (*Edges)[i].End;
             createCell(EdgeInfo);
             appendItem(EdgeInfo->Last, Edge);
         }
-    free(Edges);
+    free(*Edges);
 
     *EdgeNum = EdgeInfo->Length;
-    *Edges2 = Malloc(sizeof(edge2_t) * (*EdgeNum));
+    (*Edges) = Malloc(sizeof(edge_t) * (*EdgeNum));
 
     i = 0;
     Cell = EdgeInfo->First;
@@ -358,8 +359,8 @@ void getEdges(edge2_t **Edges2, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_
     {
         Edge = (edge_t *) Cell->Item;
 
-        (*Edges2)[i].Start = &ProjVerts[Edge->Start];
-        (*Edges2)[i].End = &ProjVerts[Edge->End];
+        (*Edges)[i].Start = Edge->Start;
+        (*Edges)[i].End = Edge->End;
 
         free(Edge);
 
