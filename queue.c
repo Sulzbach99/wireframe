@@ -48,6 +48,9 @@ void removeCell(queue_t *Queue)
     FIRSTCELL(Queue) = NEXTCELL(FIRSTCELL(Queue));
     free(ptr);
     QUEUELENGTH(Queue)--;
+
+    if (!FIRSTCELL(Queue))
+        LASTCELL(Queue) = NULL;
 }
 
 /******************************************/

@@ -330,7 +330,6 @@ void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t 
         removeCell(EdgeInfo);
         Cell = EdgeInfo->First;
     }
-    EdgeInfo->Last = NULL;
 
     qsort(*Edges, *EdgeNum, sizeof(edge_t), compareEdges);
 
