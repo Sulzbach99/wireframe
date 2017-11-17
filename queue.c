@@ -14,7 +14,7 @@ void initQueue(queue_t *Queue)
 /* Cria uma célula no final da fila dada                             /
 ** Se é a primeira célula da fila, o ponteiro First aponta para ela */
 
-void createCell(queue_t *Queue)
+void insertInQueue(queue_t *Queue, void *Addr)
 {
     if (!LASTCELL(Queue))
     {
@@ -29,13 +29,15 @@ void createCell(queue_t *Queue)
 
     NEXTCELL(LASTCELL(Queue)) = NULL;
     QUEUELENGTH(Queue)++;
+
+    LASTITEM(Queue) = Addr;
 }
 
 /*********************************************************************/
 
 /* Remove a primeira célula da fila dada */
 
-void removeCell(queue_t *Queue)
+void *takeFromQueue(queue_t *Queue)
 {
     if (!FIRSTCELL(Queue))
     {
@@ -43,23 +45,18 @@ void removeCell(queue_t *Queue)
         exit(EXIT_FAILURE);
     }
 
-    cell_t *ptr;
-    ptr = FIRSTCELL(Queue);
+    cell_t *ptrCell;
+    void *ptrItem;
+    ptrCell = FIRSTCELL(Queue);
+    ptrItem = CURRENTITEM(ptrCell);
     FIRSTCELL(Queue) = NEXTCELL(FIRSTCELL(Queue));
-    free(ptr);
+    free(ptrCell);
     QUEUELENGTH(Queue)--;
 
     if (!FIRSTCELL(Queue))
         LASTCELL(Queue) = NULL;
+
+    return ptrItem;
 }
 
-/******************************************/
-
-/* Faz o campo Item da célula dada apontar para o endereço dado */
-
-void appendItem(cell_t *Cell, void *Addr)
-{
-    CURRENTITEM(Cell) = Addr;
-}
-
-/*******************************************************/
+/*****************************************/

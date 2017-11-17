@@ -30,17 +30,15 @@ void readFile(char *path, queue_t *Verts, queue_t *Faces)
     while (fgets(line, MAXLINESIZE, OBJS))
         if (line[0] == 'v' && line[1] == ' ')
         {
-            createCell(Verts);
             ptr = Malloc(strlen(line) + 1);
             strcpy(ptr, line);
-            appendItem(Verts->Last, ptr);
+            insertInQueue(Verts, ptr);
         }
         else if (line[0] == 'f')
         {
-            createCell(Faces);
             ptr = Malloc(strlen(line) + 1);
             strcpy(ptr, line);
-            appendItem(Faces->Last, ptr);
+            insertInQueue(Faces, ptr);
         }
 
     fclose(OBJS);

@@ -37,8 +37,7 @@ typedef struct {
 /***************************************/
 
 void initQueue(queue_t *Queue);
-void createCell(queue_t *Queue);
-void removeCell(queue_t *Queue);
-void appendItem(cell_t *Cell, void *Addr);
+void insertInQueue(queue_t *Queue, void *Addr);
+void *takeFromQueue(queue_t *Queue);
 
 #endif

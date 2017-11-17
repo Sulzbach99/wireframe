@@ -100,13 +100,13 @@ void allocProjVerts(twoD_t **ProjVerts, unsigned int VertNum)
 void getRawVerts(threeD_t **RawVerts, queue_t *VertInfo, unsigned int *VertNum)
 {
     char *ptr, X[MAXFLOATSIZE], Y[MAXFLOATSIZE], Z[MAXFLOATSIZE];
-    unsigned int i, j, k = 0;
-    *VertNum = VertInfo->Length;
+    unsigned int i, j;
+    *VertNum = QUEUELENGTH(VertInfo);
     *RawVerts = Malloc(sizeof(threeD_t) * (*VertNum));
-    cell_t *Cell = VertInfo->First;
-    while (Cell)
+
+    for (unsigned int k = 0; k < *VertNum; k++)
     {
-        ptr = (char *) Cell->Item;
+        ptr = (char *) takeFromQueue(VertInfo);
 
         i = 1;
         while (!(ptr[i] >= '0' && ptr[i] <= '9') && ptr[i] != '-')
@@ -150,11 +150,6 @@ void getRawVerts(threeD_t **RawVerts, queue_t *VertInfo, unsigned int *VertNum)
         (*RawVerts)[k].x = atof(X);
         (*RawVerts)[k].y = atof(Y);
         (*RawVerts)[k].z = atof(Z);
-
-        k++;
-
-        removeCell(VertInfo);
-        Cell = VertInfo->First;
     }
     free(VertInfo);
 }
@@ -231,13 +226,13 @@ static int compareEdges(const void *a, const void *b)
 void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo, twoD_t *ProjVerts)
 {
     char *ptr, First[MAXINTSIZE], Prev[MAXINTSIZE], Next[MAXINTSIZE];
-    unsigned int i, j;
+    unsigned int i, j, FaceNum = QUEUELENGTH(FaceInfo);
     twoD_t *Aux;
     edge_t *Edge;
-    cell_t *Cell = FaceInfo->First;
-    while (Cell)
+
+    for (unsigned int k = 0; k < FaceNum; k++)
     {
-        ptr = (char *) Cell->Item;
+        ptr = (char *) takeFromQueue(FaceInfo);
 
         i = 1;
         while (ptr[i] < '0' || ptr[i] > '9')
@@ -284,8 +279,7 @@ void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t 
                     Edge->End = Aux;
                 }
 
-                createCell(EdgeInfo);
-                appendItem(EdgeInfo->Last, Edge);
+                insertInQueue(EdgeInfo, Edge);
 
                 strcpy(Prev, Next);
             }
@@ -303,32 +297,21 @@ void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t 
             Edge->End = Aux;
         }
 
-        createCell(EdgeInfo);
-        appendItem(EdgeInfo->Last, Edge);
-
-        removeCell(FaceInfo);
-        Cell = FaceInfo->First;
+        insertInQueue(EdgeInfo, Edge);
     }
     free(FaceInfo);
 
-    *EdgeNum = EdgeInfo->Length;
+    *EdgeNum = QUEUELENGTH(EdgeInfo);
     *Edges = Malloc(sizeof(edge_t) * (*EdgeNum));
 
-    i = 0;
-    Cell = EdgeInfo->First;
-    while (Cell)
+    for (unsigned int k = 0; k < *EdgeNum; k++)
     {
-        Edge = (edge_t *) Cell->Item;
+        Edge = (edge_t *) takeFromQueue(EdgeInfo);
 
-        (*Edges)[i].Start = Edge->Start;
-        (*Edges)[i].End = Edge->End;
+        (*Edges)[k].Start = Edge->Start;
+        (*Edges)[k].End = Edge->End;
 
         free(Edge);
-
-        i++;
-
-        removeCell(EdgeInfo);
-        Cell = EdgeInfo->First;
     }
 
     qsort(*Edges, *EdgeNum, sizeof(edge_t), compareEdges);
@@ -336,37 +319,28 @@ void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t 
     Edge = Malloc(sizeof(edge_t));
     Edge->Start = (*Edges)[0].Start;
     Edge->End = (*Edges)[0].End;
-    createCell(EdgeInfo);
-    appendItem(EdgeInfo->First, Edge);
-    for (i = 1; i < *EdgeNum; i++)
-        if (compareEdges(&(*Edges)[i-1], &(*Edges)[i]))
+    insertInQueue(EdgeInfo, Edge);
+    for (unsigned int k = 1; k < *EdgeNum; k++)
+        if (compareEdges(&(*Edges)[k-1], &(*Edges)[k]))
         {
             Edge = Malloc(sizeof(edge_t));
-            Edge->Start = (*Edges)[i].Start;
-            Edge->End = (*Edges)[i].End;
-            createCell(EdgeInfo);
-            appendItem(EdgeInfo->Last, Edge);
+            Edge->Start = (*Edges)[k].Start;
+            Edge->End = (*Edges)[k].End;
+            insertInQueue(EdgeInfo, Edge);
         }
     free(*Edges);
 
-    *EdgeNum = EdgeInfo->Length;
+    *EdgeNum = QUEUELENGTH(EdgeInfo);
     (*Edges) = Malloc(sizeof(edge_t) * (*EdgeNum));
 
-    i = 0;
-    Cell = EdgeInfo->First;
-    while (Cell)
+    for (unsigned int k = 0; k < *EdgeNum; k++)
     {
-        Edge = (edge_t *) Cell->Item;
+        Edge = (edge_t *) takeFromQueue(EdgeInfo);
 
-        (*Edges)[i].Start = Edge->Start;
-        (*Edges)[i].End = Edge->End;
+        (*Edges)[k].Start = Edge->Start;
+        (*Edges)[k].End = Edge->End;
 
         free(Edge);
-
-        i++;
-
-        removeCell(EdgeInfo);
-        Cell = EdgeInfo->First;
     }
     free(EdgeInfo);
 }
