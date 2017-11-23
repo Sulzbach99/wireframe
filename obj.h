@@ -10,8 +10,8 @@
 
 typedef struct {
 
-    double x;
-    double y;
+    float x;
+    float y;
 
 } twoD_t;
 
@@ -21,9 +21,9 @@ typedef struct {
 
 typedef struct {
 
-    double x;
-    double y;
-    double z;
+    float x;
+    float y;
+    float z;
 
 } threeD_t;
 
@@ -59,15 +59,22 @@ typedef struct {
 typedef struct {
 
     threeD_t Coords;
-    double AngX, AngY;
+    float AngX, AngY;
 
 } cam_t;
 
 /**********/
 
+/* Trigonometria */
+
+float Sin[360];
+float Cos[360];
+
+/*****************/
+
 #define NORM(u) sqrt(pow(u.x, 2) + pow(u.y, 2) + pow(u.z, 2))
-#define ROTA(a, b, ang) a * cos(ang) - b * sin(ang)
-#define ROTB(a, b, ang) a * sin(ang) + b * cos(ang)
+#define ROTA(a, b, ang) a * Cos[ang] - b * Sin[ang]
+#define ROTB(a, b, ang) a * Sin[ang] + b * Cos[ang]
 
 #define MAXFLOATSIZE 30
 #define MAXINTSIZE 30
@@ -79,6 +86,6 @@ void allocProjVerts(twoD_t **ProjVerts, unsigned int VertNum);
 void getRawVerts(threeD_t **RawVerts, queue_t *VertInfo, unsigned int *VertNum);
 void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, cam_t Cam);
 void getEdges(edge_t **EdgePtr, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t *FaceInfo, twoD_t *ProjVerts);
-void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H, double zoom);
+void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H, float zoom);
 
 #endif

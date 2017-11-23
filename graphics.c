@@ -27,7 +27,7 @@ void initGraphics()
 
 /* Plota o objeto, desenhando as arestas */
 
-char plotObj(edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir, double *zoom)
+char plotObj(edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir, float *zoom)
 { 
     SDL_Event e;
     signed char status = -1;

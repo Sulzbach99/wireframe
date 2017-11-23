@@ -26,7 +26,7 @@ void initObj(obj_t *Obj)
 
 void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 {
-    double aux, Radius = NORM(RawVerts[0]);
+    float aux, Radius = NORM(RawVerts[0]);
     for (unsigned int i = 1; i < VertNum; i++)
     {
         aux = NORM(RawVerts[i]);
@@ -51,7 +51,7 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 void moveCam(cam_t *Cam, twoD_t dir)
 {
     threeD_t Proj;
-    double Ang = M_PI / 180;
+    float Ang = M_PI / 180;
 
     Proj.x = Cam->Coords.x;
     Proj.z = Cam->Coords.z;
@@ -161,7 +161,7 @@ void getRawVerts(threeD_t **RawVerts, queue_t *VertInfo, unsigned int *VertNum)
 
 void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, cam_t Cam)
 {
-    double d, lambda;
+    float d, lambda;
     threeD_t CurrentVert, ProjCenter;
 
     ProjCenter.x = -2 * Cam.Coords.x;
@@ -350,9 +350,9 @@ void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t 
 /* Converte as coordenadas cartesianas abstratas do vetor de vértices bidimensionais /
 ** para coordenadas de tela                                                         */
 
-void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H, double zoom)
+void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W, unsigned int H, float zoom)
 {
-    double Xmax, Xmin, Ymax, Ymin;
+    float Xmax, Xmin, Ymax, Ymin;
     Xmax = Xmin = ProjVerts[0].x;
     Ymax = Ymin = ProjVerts[0].y;
     for (unsigned int i = 1; i < VertNum; i++)
@@ -370,16 +370,16 @@ void convertToScrCoords(twoD_t *ProjVerts, unsigned int VertNum, unsigned int W,
             Ymin = ProjVerts[i].y;
     }
 
-    double Xcen = (Xmax + Xmin) / 2;
-    double Xdif = Xmax - Xmin;
+    float Xcen = (Xmax + Xmin) / 2;
+    float Xdif = Xmax - Xmin;
 
-    double Ycen = (Ymax + Ymin) / 2;
-    double Ydif = Ymax - Ymin;
+    float Ycen = (Ymax + Ymin) / 2;
+    float Ydif = Ymax - Ymin;
 
-    double Scx = W / Xdif;
-    double Scy = H / Ydif;
+    float Scx = W / Xdif;
+    float Scy = H / Ydif;
 
-    double Scale;
+    float Scale;
     if (Scx < Scy)
         Scale = Scx;
     else

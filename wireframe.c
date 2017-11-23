@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
     allocProjVerts(&Object.ProjVerts, Object.VertNum);
     getProjVerts(Object.RawVerts, Object.ProjVerts, Object.VertNum, Camera);
-    double zoom = 0.95;
+    float zoom = 0.95;
     convertToScrCoords(Object.ProjVerts, Object.VertNum, WIDTH, HEIGHT, zoom);
 
     getEdges(&Object.Edges, Object.EdgeInfo, &Object.EdgeNum, Object.FaceInfo, Object.ProjVerts);
