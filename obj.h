@@ -79,6 +79,7 @@ float Cos[360];
 #define MAXFLOATSIZE 30
 #define MAXINTSIZE 30
 
+void initTrig();
 void initObj(obj_t *Obj);
 void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum);
 void moveCam(cam_t *Cam, twoD_t dir);

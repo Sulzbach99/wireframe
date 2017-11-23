@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
     char path[MAXPATHSIZE];
     parseArgs(argc, argv, path);
 
+    initTrig();
     obj_t Object;
     initObj(&Object);
     readFile(path, Object.VertInfo, Object.FaceInfo);

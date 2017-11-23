@@ -1,5 +1,14 @@
 #include "obj.h"
 
+void initTrig()
+{
+    for (unsigned int i = 0; i < 360; i++)
+    {
+        Sin[i] = sin(i * M_PI / 180);
+        Cos[i] = cos(i * M_PI / 180);
+    }
+}
+
 /* Inicializa o objeto */
 
 void initObj(obj_t *Obj)
