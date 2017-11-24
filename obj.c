@@ -199,7 +199,7 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
         CurrentVert.z *= lambda;
 
         rotate(&CurrentVert.x, &CurrentVert.z, CurrentVert.x, CurrentVert.z, -Cam.AngX - 90);
-        rotate(&CurrentVert.y, &CurrentVert.z, CurrentVert.y, CurrentVert.z, -Cam.AngY - 90);
+        rotate(&CurrentVert.y, &CurrentVert.z, CurrentVert.y, CurrentVert.z, -Cam.AngY + 90);
 
         ProjVerts[i].x = CurrentVert.x;
         ProjVerts[i].y = CurrentVert.y;
