@@ -14,7 +14,7 @@ void rotate(float *x, float *y, float a, float b, short ang)
     while (ang < 0)
         ang += 360;
 
-    while (ang > 360)
+    while (ang >= 360)
         ang -= 360;
 
     *x = ROTA(a, b, ang);
