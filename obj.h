@@ -73,13 +73,14 @@ float Cos[360];
 /*****************/
 
 #define NORM(u) sqrt(pow(u.x, 2) + pow(u.y, 2) + pow(u.z, 2))
-#define ROTA(a, b, ang) a * Cos[(ang + 720) % 360] - b * Sin[(ang + 720) % 360]
-#define ROTB(a, b, ang) a * Sin[(ang + 720) % 360] + b * Cos[(ang + 720) % 360]
+#define ROTA(a, b, ang) a * Cos[ang] - b * Sin[ang]
+#define ROTB(a, b, ang) a * Sin[ang] + b * Cos[ang]
 
 #define MAXFLOATSIZE 30
 #define MAXINTSIZE 30
 
 void initTrig();
+void rotate(float *x, float *y, float a, float b, short ang);
 void initObj(obj_t *Obj);
 void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum);
 void moveCam(cam_t *Cam, twoD_t dir);

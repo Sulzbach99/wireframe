@@ -9,6 +9,18 @@ void initTrig()
     }
 }
 
+void rotate(float *x, float *y, float a, float b, short ang)
+{
+    while (ang < 0)
+        ang += 360;
+
+    while (ang > 360)
+        ang -= 360;
+
+    *x = ROTA(a, b, ang);
+    *y = ROTB(a, b, ang);
+}
+
 /* Inicializa o objeto */
 
 void initObj(obj_t *Obj)
@@ -64,38 +76,26 @@ void moveCam(cam_t *Cam, twoD_t dir)
     Proj.x = Cam->Coords.x;
     Proj.z = Cam->Coords.z;
 
-    Cam->Coords.x = ROTA(Proj.x, Proj.z, (short) -dir.x);
-    Cam->Coords.z = ROTB(Proj.x, Proj.z, (short) -dir.x);
+    rotate(&Cam->Coords.x, &Cam->Coords.z, Proj.x, Proj.z, (short) -dir.x);
 
     Cam->AngX -= dir.x;
-    if (Cam->AngX > 360)
-        Cam->AngX -= 360;
-    else if (Cam->AngX < 0)
-        Cam->AngX += 360;
 
     Proj.x = Cam->Coords.x;
     Proj.y = Cam->Coords.y;
     Proj.z = Cam->Coords.z;
 
-    Cam->Coords.x = ROTA(Proj.x, Proj.z, -Cam->AngX);
-    Cam->Coords.z = ROTB(Proj.x, Proj.z, -Cam->AngX);
+    rotate(&Cam->Coords.x, &Cam->Coords.z, Proj.x, Proj.z, -Cam->AngX);
 
     Proj.x = Cam->Coords.x;
     Proj.z = Cam->Coords.z;
 
-    Cam->Coords.x = ROTA(Proj.x, Proj.y, (short) dir.y);
-    Cam->Coords.y = ROTB(Proj.x, Proj.y, (short) dir.y);
+    rotate(&Cam->Coords.x, &Cam->Coords.y, Proj.x, Proj.y, (short) dir.y);
 
     Proj.x = Cam->Coords.x;
 
-    Cam->Coords.x = ROTA(Proj.x, Proj.z, Cam->AngX);
-    Cam->Coords.z = ROTB(Proj.x, Proj.z, Cam->AngX);
+    rotate(&Cam->Coords.x, &Cam->Coords.z, Proj.x, Proj.z, Cam->AngX);
 
     Cam->AngY += dir.y;
-    if (Cam->AngY > 360)
-        Cam->AngY -= 360;
-    else if (Cam->AngY < 0)
-        Cam->AngY += 360;
 }
 
 /********************************/
@@ -198,11 +198,8 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
         CurrentVert.y *= lambda;
         CurrentVert.z *= lambda;
 
-        CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngX - 90);
-        CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngX - 90);
-
-        CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY - 90);
-        CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY - 90);
+        rotate(&CurrentVert.x, &CurrentVert.z, CurrentVert.x, CurrentVert.z, -Cam.AngX - 90);
+        rotate(&CurrentVert.y, &CurrentVert.z, CurrentVert.y, CurrentVert.z, -Cam.AngY - 90);
 
         ProjVerts[i].x = CurrentVert.x;
         ProjVerts[i].y = CurrentVert.y;
