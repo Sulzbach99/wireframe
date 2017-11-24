@@ -49,8 +49,8 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
     Cam->Coords.y = 0;
     Cam->Coords.z = Radius;
 
-    Cam->AngX = M_PI / 2;
-    Cam->AngY = M_PI / 2;
+    Cam->AngX = 90;
+    Cam->AngY = 90;
 }
 
 /***********************/
@@ -60,15 +60,18 @@ void initCam(cam_t *Cam, threeD_t *RawVerts, unsigned int VertNum)
 void moveCam(cam_t *Cam, twoD_t dir)
 {
     threeD_t Proj;
-    float Ang = M_PI / 180;
 
     Proj.x = Cam->Coords.x;
     Proj.z = Cam->Coords.z;
 
-    Cam->Coords.x = ROTA(Proj.x, Proj.z, -Ang * dir.x);
-    Cam->Coords.z = ROTB(Proj.x, Proj.z, -Ang * dir.x);
+    Cam->Coords.x = ROTA(Proj.x, Proj.z, (short) -dir.x);
+    Cam->Coords.z = ROTB(Proj.x, Proj.z, (short) -dir.x);
 
-    Cam->AngX -= Ang * dir.x;
+    Cam->AngX -= dir.x;
+    if (Cam->AngX > 360)
+        Cam->AngX -= 360;
+    else if (Cam->AngX < 0)
+        Cam->AngX += 360;
 
     Proj.x = Cam->Coords.x;
     Proj.y = Cam->Coords.y;
@@ -80,15 +83,19 @@ void moveCam(cam_t *Cam, twoD_t dir)
     Proj.x = Cam->Coords.x;
     Proj.z = Cam->Coords.z;
 
-    Cam->Coords.x = ROTA(Proj.x, Proj.y, Ang * dir.y);
-    Cam->Coords.y = ROTB(Proj.x, Proj.y, Ang * dir.y);
+    Cam->Coords.x = ROTA(Proj.x, Proj.y, (short) dir.y);
+    Cam->Coords.y = ROTB(Proj.x, Proj.y, (short) dir.y);
 
     Proj.x = Cam->Coords.x;
 
     Cam->Coords.x = ROTA(Proj.x, Proj.z, Cam->AngX);
     Cam->Coords.z = ROTB(Proj.x, Proj.z, Cam->AngX);
 
-    Cam->AngY += Ang * dir.y;
+    Cam->AngY += dir.y;
+    if (Cam->AngY > 360)
+        Cam->AngY -= 360;
+    else if (Cam->AngY < 0)
+        Cam->AngY += 360;
 }
 
 /********************************/
@@ -191,18 +198,18 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
         CurrentVert.y *= lambda;
         CurrentVert.z *= lambda;
 
-        CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngX - M_PI / 2);
-        CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngX - M_PI / 2);
+        CurrentVert.x = ROTA(CurrentVert.x, CurrentVert.z, -Cam.AngX - 90);
+        CurrentVert.z = ROTB(CurrentVert.x, CurrentVert.z, -Cam.AngX - 90);
 
-        CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
-        CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY - M_PI / 2);
+        CurrentVert.y = ROTA(CurrentVert.y, CurrentVert.z, -Cam.AngY - 90);
+        CurrentVert.z = ROTB(CurrentVert.y, CurrentVert.z, -Cam.AngY - 90);
 
         ProjVerts[i].x = CurrentVert.x;
         ProjVerts[i].y = CurrentVert.y;
     }
 
 #ifdef __DEBUG__
-    printf("AngX: %f AngY: %f\n", Cam.AngX, Cam.AngY);
+    printf("AngX: %d AngY: %d\n", Cam.AngX, Cam.AngY);
     printf("\n");
 #endif
 }
