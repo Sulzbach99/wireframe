@@ -2,7 +2,7 @@ CC =			gcc
 CFLAGS =		-Wall -g
 LDLIBS =		-lSDL2 -lSDL2_gfx -lm
 
-all:			wireframe
+all:			wireframe clean
 
 wireframe:		wireframe.o Malloc.o queue.o obj.o graphics.o
 
@@ -13,7 +13,7 @@ graphics.o:		graphics.c graphics.h obj.h
 wireframe.o:	wireframe.c graphics.h
 
 clean:
-				-rm *.o
+				-rm -f *.o
 
 purge:			clean
-				-rm wireframe
+				-rm -f wireframe
