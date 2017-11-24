@@ -184,7 +184,7 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
     ProjCenter.y = -2 * Cam.Coords.y;
     ProjCenter.z = -2 * Cam.Coords.z;
 
-    d = NORM(ProjCenter);
+    d = -NORM(ProjCenter);
 
     for (unsigned int i = 0; i < VertNum; i++)
     {
