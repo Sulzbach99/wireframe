@@ -192,7 +192,7 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
         CurrentVert.y = RawVerts[i].y - Cam.Coords.y;
         CurrentVert.z = RawVerts[i].z - Cam.Coords.z;
 
-        lambda = d / (ProjCenter.x * CurrentVert.x + ProjCenter.y * CurrentVert.y + ProjCenter.z * CurrentVert.z );
+        lambda = d / (ProjCenter.x * CurrentVert.x + ProjCenter.y * CurrentVert.y + ProjCenter.z * CurrentVert.z);
 
         CurrentVert.x *= lambda;
         CurrentVert.y *= lambda;
