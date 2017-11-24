@@ -73,8 +73,8 @@ float Cos[360];
 /*****************/
 
 #define NORM(u) sqrt(pow(u.x, 2) + pow(u.y, 2) + pow(u.z, 2))
-#define ROTA(a, b, ang) a * Cos[(ang + 360) % 360] - b * Sin[(ang + 360) % 360]
-#define ROTB(a, b, ang) a * Sin[(ang + 360) % 360] + b * Cos[(ang + 360) % 360]
+#define ROTA(a, b, ang) a * Cos[(ang + 720) % 360] - b * Sin[(ang + 720) % 360]
+#define ROTB(a, b, ang) a * Sin[(ang + 720) % 360] + b * Cos[(ang + 720) % 360]
 
 #define MAXFLOATSIZE 30
 #define MAXINTSIZE 30
