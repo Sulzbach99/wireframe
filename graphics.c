@@ -98,9 +98,9 @@ char plotObj(edge_t *Edges, unsigned int EdgeNum, threeD_t *Cam, twoD_t *dir, fl
                 printf("Event: Mouse Motion\n");
 #endif
                 if (e.motion.x - Start.x > 0)
-                    dir->x = -1;
-                else if (e.motion.x - Start.x < 0)
                     dir->x = 1;
+                else if (e.motion.x - Start.x < 0)
+                    dir->x = -1;
                 else
                     dir->x = 0;
 
