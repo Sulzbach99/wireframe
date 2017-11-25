@@ -1,7 +1,7 @@
 #include "graphics.h"
 
-#define MAXPATHSIZE 50
-#define MAXLINESIZE 50
+#define MAXPATHSIZE 500
+#define MAXLINESIZE 1000
 
 void parseArgs(int argc, char *argv[], char *path)
 {
