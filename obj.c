@@ -74,13 +74,6 @@ void moveCam(cam_t *Cam, twoD_t dir)
     threeD_t Proj;
 
     Proj.x = Cam->Coords.x;
-    Proj.z = Cam->Coords.z;
-
-    rotate(&Cam->Coords.x, &Cam->Coords.z, Proj.x, Proj.z, (short) -dir.x);
-
-    Cam->AngX -= dir.x;
-
-    Proj.x = Cam->Coords.x;
     Proj.y = Cam->Coords.y;
     Proj.z = Cam->Coords.z;
 
@@ -96,6 +89,13 @@ void moveCam(cam_t *Cam, twoD_t dir)
     rotate(&Cam->Coords.x, &Cam->Coords.z, Proj.x, Proj.z, Cam->AngX);
 
     Cam->AngY += dir.y;
+
+    Proj.x = Cam->Coords.x;
+    Proj.z = Cam->Coords.z;
+
+    rotate(&Cam->Coords.x, &Cam->Coords.z, Proj.x, Proj.z, (short) -dir.x);
+
+    Cam->AngX -= dir.x;
 }
 
 /********************************/
