@@ -1,3 +1,5 @@
+/* LUCAS SULZBACH GRR20171595 */
+
 #ifndef __OBJ__
 #define __OBJ__
 

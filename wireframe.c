@@ -1,3 +1,5 @@
+/* LUCAS SULZBACH GRR20171595 */
+
 #include "graphics.h"
 
 #define MAXPATHSIZE 500

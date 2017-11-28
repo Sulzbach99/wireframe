@@ -1,3 +1,5 @@
+# LUCAS SULZBACH GRR20171595
+
 CC =			gcc
 CFLAGS =		-Wall -g
 LDLIBS =		-lSDL2 -lSDL2_gfx -lm

@@ -1,3 +1,5 @@
+/* LUCAS SULZBACH GRR20171595 */
+
 #ifndef __QUEUE__
 #define __QUEUE__
 

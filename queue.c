@@ -1,3 +1,5 @@
+/* LUCAS SULZBACH GRR20171595 */
+
 #include "queue.h"
 
 /* Cria uma fila genérica com ponteiros First e Last iguais a NULL */

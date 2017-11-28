@@ -1,4 +1,8 @@
+/* LUCAS SULZBACH GRR20171595 */
+
 #include "obj.h"
+
+/* Calcula os senos e cossenos de todos os ângulos de grau 0 a 360 e os armazena em vetores */
 
 void initTrig()
 {
@@ -8,6 +12,10 @@ void initTrig()
         Cos[i] = cos(i * M_PI / 180);
     }
 }
+
+/********************************************************************************************/
+
+/* Rotaciona um vetor/ponto */
 
 void rotate(float *x, float *y, float a, float b, short ang)
 {
@@ -20,6 +28,8 @@ void rotate(float *x, float *y, float a, float b, short ang)
     *x = ROTA(a, b, ang);
     *y = ROTB(a, b, ang);
 }
+
+/****************************/
 
 /* Inicializa o objeto */
 
@@ -184,6 +194,7 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
     ProjCenter.y = -2 * Cam.Coords.y;
     ProjCenter.z = -2 * Cam.Coords.z;
 
+    // Equação geral do plano
     d = pow(ProjCenter.x, 2) + pow(ProjCenter.y, 2) + pow(ProjCenter.z, 2);
 
     for (unsigned int i = 0; i < VertNum; i++)
@@ -194,10 +205,12 @@ void getProjVerts(threeD_t *RawVerts, twoD_t *ProjVerts, unsigned int VertNum, c
 
         lambda = d / (ProjCenter.x * CurrentVert.x + ProjCenter.y * CurrentVert.y + ProjCenter.z * CurrentVert.z);
 
+        // Cálculo da projeção no plano
         CurrentVert.x *= lambda;
         CurrentVert.y *= lambda;
         CurrentVert.z *= lambda;
 
+        // Rotação do plano de modo a encaixar com o plano xy
         rotate(&CurrentVert.x, &CurrentVert.z, CurrentVert.x, CurrentVert.z, -Cam.AngX - 90);
         rotate(&CurrentVert.y, &CurrentVert.z, CurrentVert.y, CurrentVert.z, -Cam.AngY - 90);
 
@@ -327,6 +340,7 @@ void getEdges(edge_t **Edges, queue_t *EdgeInfo, unsigned int *EdgeNum, queue_t 
         free(Edge);
     }
 
+    // As arestas repetidas se agrupam ao ordenar
     qsort(*Edges, *EdgeNum, sizeof(edge_t), compareEdges);
 
     Edge = Malloc(sizeof(edge_t));

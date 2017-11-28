@@ -1,3 +1,5 @@
+/* LUCAS SULZBACH GRR20171595 */
+
 #ifndef __MALLOC__
 #define __MALLOC__
 
