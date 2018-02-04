@@ -6,6 +6,6 @@ compilation:
         - make
         - make clean
     artifacts:
-        - untracked: true
+        untracked: true
     tags:
         - ubuntu
