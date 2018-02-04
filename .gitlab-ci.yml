@@ -1,0 +1,11 @@
+before_script:
+    - apt-get update && apt-get install -y libsdl2-dev libsdl2-gfx-dev
+
+compilation:
+    script:
+        - make
+        - make clean
+    artifacts:
+        - untracked: true
+    tags:
+        - ubuntu
