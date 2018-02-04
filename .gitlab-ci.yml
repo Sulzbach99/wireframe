@@ -4,7 +4,6 @@ before_script:
 compilation:
     script:
         - make
-        - make clean
     artifacts:
         untracked: true
     tags:
